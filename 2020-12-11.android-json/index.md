@@ -24,7 +24,7 @@ implementation('some-group:some-module:some-version') {
 }
 ```
 
-## WHY
+## how:
 
 시작은 Android 앱에서 JSON 파싱 관련해 이런 오류 로그를 만난 것이었다.
 
@@ -75,7 +75,7 @@ $ ./gradlew --no-daemon :app:dependencies --configuration releaseCompileClasspat
 ...
 ```
 
-## MORE WHY
+## WHY
 
 요즘 JSON 처리를 기본 제공하지 않는 곳이 있을까? 수 년 전까지는 데이터를 어떤 형식으로 적재/보관하고 또한 어떤 형식을 기대해서 넘길 것인지에 대해 많은 싸움이 있었다. 전통의 XML이 있었지만, XML 얘기는 생략해도 될 것 같다. Protocol Buffer 나 MessagePack 같은 바이너리 대안은 프론트엔드로 넘어오면 별 장점을 발휘하지 못했다. 다들 갑론을박하던 MongoDB 의 BSON 이나 PostgresQL의 JSONB 도 마찬가지였다. 결국 JSON이 최후의 승자로 남았다.
 
