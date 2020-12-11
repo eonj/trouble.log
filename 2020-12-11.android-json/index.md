@@ -1,6 +1,6 @@
 Trouble ID `2020-12-11.android-json`
 
-# Android에서 JSON 파싱이 이상해졌음
+# Android 에서 JSON 파싱이 이상해졌음
 
 ## tl;dr:
 
@@ -77,9 +77,9 @@ $ ./gradlew --no-daemon :app:dependencies --configuration releaseCompileClasspat
 
 ## WHY
 
-요즘 JSON 처리를 기본 제공하지 않는 곳이 있을까? 수 년 전까지는 데이터를 어떤 형식으로 적재/보관하고 또한 어떤 형식을 기대해서 넘길 것인지에 대해 많은 싸움이 있었다. 전통의 XML이 있었지만, XML 얘기는 생략해도 될 것 같다. Protocol Buffer 나 MessagePack 같은 바이너리 대안은 프론트엔드로 넘어오면 별 장점을 발휘하지 못했다. 다들 갑론을박하던 MongoDB 의 BSON 이나 PostgresQL의 JSONB 도 마찬가지였다. 결국 JSON이 최후의 승자로 남았다.
+요즘 JSON 처리를 기본 제공하지 않는 곳이 있을까? 수 년 전까지는 데이터를 어떤 형식으로 적재/보관하고 또한 어떤 형식을 기대해서 넘길 것인지에 대해 많은 싸움이 있었다. 전통의 XML 이 있었지만, XML 얘기는 생략해도 될 것 같다. Protocol Buffer 나 MessagePack 같은 바이너리 대안은 프론트엔드로 넘어오면 별 장점을 발휘하지 못했다. 다들 갑론을박하던 MongoDB 의 BSON 이나 PostgreSQL 의 JSONB 도 마찬가지였다. 결국 JSON 이 최후의 승자로 남았다.
 
-Android는 API level 1부터 프레임워크 라이브러리의 일부로 (무려 libcore에서) `org.json.*` 패키지에 JSON 런타임 라이브러리를 기본 제공하고 있다. 이 패키지 컨벤션은 Sean Leary \[stleary\] 의 JSON-java 에서 가져온 것인데, 패키지를 따서 org.json 이라는 별명으로 더 많이 알려져 있다. 이 라이브러리가 Java 에서 JSON 처리의 표준이다. 그래서, 요즘은 대부분의 라이브러리가 마찬가지로 JSON 데이터를 직접 생산/소비할 수 있도록 `org.json:json` 에 의존성을 두고 있다.
+Android 는 API level 1 부터 프레임워크 라이브러리의 일부로 (무려 libcore 에서) `org.json.*` 패키지에 JSON 런타임 라이브러리를 기본 제공하고 있다. 이 패키지 컨벤션은 Sean Leary \[stleary\] 의 JSON-java 에서 가져온 것인데, 패키지를 따서 org.json 이라는 별명으로 더 많이 알려져 있다. 이 라이브러리가 Java 에서 JSON 처리의 표준이다. 그래서, 요즘은 대부분의 라이브러리가 마찬가지로 JSON 데이터를 직접 생산/소비할 수 있도록 `org.json:json` 에 의존성을 두고 있다.
 
 패키지명과 클래스명만 같다는 점에 주목할 필요가 있다. Android 런타임의 `org.json.*` 클래스는 org.json 에서 가져온 것이 아니고 org.json 의 명세를 보고 새로 클린룸 구현된 것이다.
 
@@ -104,7 +104,7 @@ A cleanroom implementation of the org.json API.
 
 <https://android.googlesource.com/platform/libcore/+log/refs/heads/master/json/src/main/java/org/json/JSONObject.java>
 
-Android libcore 의 `org.json.*` 구현은 문서화된 API이기도 하기 때문에 다른 구현들과 함께 Zygote 에서 런타임으로 주입될 것이고 난독화를 거치지도 않는다. org.json 을 포함해서 앱을 빌드하면, Android 런타임에는 org.json 과 libcore 양쪽에서 온 `org.json.*` 클래스가 존재하게 된다. 난독화를 거치지 않으면 이 둘 중 하나가 실행될 것이다. 난독화를 거치면 실제로는 앱에 포함된 org.json 라이브러리만 난독화를 겪게 되므로 org.json 라이브러리가 dispatch 될 것이다.
+Android libcore 의 `org.json.*` 구현은 문서화된 API 이기도 하기 때문에 다른 구현들과 함께 Zygote 에서 런타임으로 주입될 것이고 난독화를 거치지도 않는다. org.json 을 포함해서 앱을 빌드하면, Android 런타임에는 org.json 과 libcore 양쪽에서 온 `org.json.*` 클래스가 존재하게 된다. 난독화를 거치지 않으면 이 둘 중 하나가 실행될 것이다. 난독화를 거치면 실제로는 앱에 포함된 org.json 라이브러리만 난독화를 겪게 되므로 org.json 라이브러리가 dispatch 될 것이다.
 
 구현을 보면 Android libcore 의 `JSONObject#getString` 은 JSON 원본 값이 number 이더라도 string 으로 변환해 주는 타입 강제를 수행한다. 그러나 org.json 의 경우, 그런 타입 강제가 `JSONObject#getString` 에는 없고 `JSONObject#getInt` 에는 있다.
 
