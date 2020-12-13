@@ -21,7 +21,7 @@ someLibraryDependencyConfigClosureRelease = {
 
 ## .text
 
-사실 이 이야기는 Groovy 를 웬만큼 알고 있는 사람들에게는 "아 그렇구나" 싶을 정도에서 끝날 수준인데, Groovy 를 잘 모르면 대강 수박 겉핥기 하고 넘어가야 하는 내용이다.
+사실 이 이야기는 Groovy 를 웬만큼 알고 있는 사람들에게는 "아 그렇구나" 싶을 정도에서 끝날 수준인데, Groovy 를 잘 모르면 수박 겉핥기를 좀 길게 하고 넘어가야 하는 내용이다.
 
 나도 Groovy 를 많이 써 본 적이 없다. JVM 타깃으로 쓸 수 있는 언어들을 공부할 때 조금 써 봤고, Android 앱 CI 서버를 Apache Ant 로 만들던 시절에 Java 와 상호운용성 (interoperability) 좋고 런타임이 Dalvik 에서 돌릴 정도로 작은 대안 언어로 조금 써 봤다. 이후에 Android 앱의 표준 빌드 시스템이 Gradle 로 바뀌면서 빌드스크립트로만 지겹게 봤다.
 
@@ -135,7 +135,7 @@ someLibraryDependencyConfigClosureRelease = {
 Gradle DSL method not found: 'exclude()'
 ```
 
-이제 이 지점에서 해법부터 얘기하자면 Groovy 클로저에 대해 '대리자 (delegate)' 를 정확히 지정해야 하며 '수분보충 (rehydration)' 도 해 줘야 한다. 그 결과물을 tl;dr: 에 먼저 적어 뒀다.
+이제 이 지점에서 해법부터 얘기하자면 Groovy 클로저에 대해 '대리자 (delegate)' 를 정확히 지정해야 하며 '수분보충 (rehydration)' 도 해 줘야 한다. 그 결과물을 맨 위에 먼저 적어 뒀다.
 
 그래서 이게 당최 무슨 말인가? 설명을 하려면 좀 긴 얘기가 될 듯하니 여기서 잠깐 끊자.
 
@@ -180,14 +180,14 @@ void dependencies (Closure configureClosure)
 
 Configures the dependencies for this project.
 
-This method executes the given closure against the DependencyHandler for this project. The DependencyHandler is passed to the closure as the closure's delegate. 
+This method executes the given closure against the DependencyHandler for this project. The DependencyHandler is passed to the closure as the closure's delegate.
 ```
 
 <https://gradle.github.io/kotlin-dsl-docs/api/org.gradle.api/-project/index.html>
 
 `DependencyHandler` 역시 `create()` 를 호출할 때에 `configureClosure` 인자의 `delegate` 가 어떤 유형인지 명시해 주지 않을까? 아쉽게도 그렇지 않다. 이 클로저가 어떻게 실행될지는 순전히 `configurationName` 을 구현한 쪽 마음대로이기 때문이다. 예를 들어 Kotlin kapt 는 `kapt(...)` 처럼 어노테이션 프로세서를 `dependencies {}` 블록에 지정할 수 있는데 여기에 클로저를 넘기면 그냥 깔끔히 무시된다. 당연한 일이다. 
 
-다행히 Groovy는 대놓고 약유형 언어라서 우린 이 유형에 대해 정확히 알 필요가 없다. 마지막으로 실패했던 클로저 정의가 이렇게 생겼다.
+다행히 Groovy 는 대놓고 약유형 언어라서 우린 이 유형에 대해 정확히 알 필요가 없다. 마지막으로 실패했던 클로저 정의가 이렇게 생겼다.
 
 ```
 someLibraryDependencyConfigClosure = {
@@ -233,7 +233,7 @@ Parameters:
 Returns:
     a copy of this closure where owner, delegate and thisObject are replaced
 Since:
-    1.8.5 
+    1.8.5
 ```
 
 이제 다 왔다. 아마 `dependencies {}` 블록 내의 `implementation(...)` 구문에 직접 전달한 클로저는 대리자만 교체하는 방식으로 `exclude()` 같은 메소드 참조를 제공받을 수 없었을 것이고, 실제로 Gradle 내장 `implementation` 구성이 이 클로저에 수분보충을 적용해 `this`, `owner`, `delegate` 모두 교체하여 실행하였을 것이다. 따라서 `implementation(...)` 구문에 전달한 클로저가 다른 클로저를 실행할 때 `exclude()` 같은 메소드 참조를 제공받는 맥락을 공유하려면, 대상 클로저에 수분보충을 적용하는 것이 맞다.
