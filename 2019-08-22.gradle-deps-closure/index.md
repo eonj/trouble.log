@@ -145,7 +145,7 @@ Gradle DSL method not found: 'exclude()'
 
 ![coincidence-kubernetes-and-heptagon-of-configuration](./coincidence-kubernetes-and-heptagon-of-configuration.png)
 
-https://matt-rickard.com/heptagon-of-configuration/
+<https://matt-rickard.com/heptagon-of-configuration/>
 
 빌드 툴체인을 거치기 전의 소스코드만 생각하면 뜬구름 잡는 이야기처럼 느껴질 법하지만, 빌드 시스템으로 맥락을 바꾸면 이 주장은 확고한 실체를 지닌다.
 
@@ -183,7 +183,7 @@ Configures the dependencies for this project.
 This method executes the given closure against the DependencyHandler for this project. The DependencyHandler is passed to the closure as the closure's delegate. 
 ```
 
-https://gradle.github.io/kotlin-dsl-docs/api/org.gradle.api/-project/index.html
+<https://gradle.github.io/kotlin-dsl-docs/api/org.gradle.api/-project/index.html>
 
 `DependencyHandler` 역시 `create()` 를 호출할 때에 `configureClosure` 인자의 `delegate` 가 어떤 유형인지 명시해 주지 않을까? 아쉽게도 그렇지 않다. 이 클로저가 어떻게 실행될지는 순전히 `configurationName` 을 구현한 쪽 마음대로이기 때문이다. 예를 들어 Kotlin kapt 는 `kapt(...)` 처럼 어노테이션 프로세서를 `dependencies {}` 블록에 지정할 수 있는데 여기에 클로저를 넘기면 그냥 깔끔히 무시된다. 당연한 일이다. 
 
