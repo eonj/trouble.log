@@ -223,7 +223,7 @@ $ source ./venv/bin/activate
     url = ./
   ```
 
-  Git 서브모듈 URL 은 상대경로인 `./` 나 `../` 로 시작하는 값을 허용하는데, 이는 HTTP(S) 나 SSH 리모트 저장소가 있는 환경을 위한 값이 아니다. `.gitmodules` 파일 내용이 저 상태인데 git-clone 으로 리모트 저장소를 클론한 후 git-submodule 에서 init 을 하면 서브모듈의 리모트 경로는 본래 리모트 경로 뒤에 슬래시 문자가 하나 추가된 값이 된다. (예: `https://github.com/sample/repo-url.git` :arrow_right: `https://github.com/sample/repo-url.git/`; `git@github.com:sample/repo-url.git` :arrow_right: `git@github.com:sample/repo-url.git/`.) HTTP(S) 인 경우 HTTP 서버의 리디렉션에 따라 리모트가 좋게좋게 해 줄 수 있으나 Git+SSH 인 경우 그럴 일 없다고 보면 된다. 그래서 `ci` 를 체크아웃한 후에 이런 미친 절차가 필요하다. (set-url 이 git-submodule 서브커맨드에 없다면 `.git/config` 를 수정해야 한다.)
+  Git 서브모듈 URL 은 상대경로인 `./` 나 `../` 로 시작하는 값을 허용하는데, 이는 HTTP(S) 나 SSH 리모트 저장소가 있는 환경을 위한 값이 아니다. `.gitmodules` 파일 내용이 저 상태인데 git-clone 으로 리모트 저장소를 클론한 후 git-submodule 에서 init 을 하면 서브모듈의 리모트 경로는 본래 리모트 경로 뒤에 슬래시 문자가 하나 추가된 값이 된다. (예: `https://github.com/sample/repo-url.git` &rightarrow; `https://github.com/sample/repo-url.git/`; `git@github.com:sample/repo-url.git` ​&rightarrow;​ `git@github.com:sample/repo-url.git/`.) HTTP(S) 인 경우 HTTP 서버의 리디렉션에 따라 리모트가 좋게좋게 해 줄 수 있으나 Git+SSH 인 경우 그럴 일 없다고 보면 된다. 그래서 `ci` 를 체크아웃한 후에 이런 미친 절차가 필요하다. (set-url 이 git-submodule 서브커맨드에 없다면 `.git/config` 를 수정해야 한다.)
 
   ```
   $ git submodule init
