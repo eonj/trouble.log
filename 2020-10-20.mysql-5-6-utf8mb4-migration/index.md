@@ -19,7 +19,7 @@ $ echo -ne '\xf0\x9f\x93\x9a'
 📚
 ```
 
-그럼 왜 `Incorrect string value` 같은 에러 메시지가 났냐면, 이 서버가 쓰는 MySQL 5.6 table 의 charset 으로 `utf8` 이 아니라 `utf8mb4` 이 지정되어 있었기 때문이다.
+그럼 왜 `Incorrect string value` 같은 에러 메시지가 났냐면, 이 서버가 쓰는 MySQL 5.6 table 의 charset 으로 `utf8mb4` 가 아니라 `utf8` 이 지정되어 있었기 때문이다.
 
 UTF-8 은 가변 길이 바이트 시퀀스로 1 개의 코드포인트를 나타내는 유니코드 인코딩으로, 1 개의 코드포인트가 최대 4 바이트를 점유할 수 있다.
 
