@@ -126,4 +126,4 @@ multicolumn index 의 경우 전체 길이를 합산한 것에 대해 길이 제
 
 \[8\] StackOverflow; answering post \# 45535543 on questioning post \# 24365504. <https://stackoverflow.com/a/45535543/2214758>
 
-\[9\] Database Administrators StackExchange; answering post \# 114870 on questioning post \# 114471. https://dba.stackexchange.com/a/114870/224173
+\[9\] Database Administrators StackExchange; answering post \# 114870 on questioning post \# 114471. <https://dba.stackexchange.com/a/114870/224173>
