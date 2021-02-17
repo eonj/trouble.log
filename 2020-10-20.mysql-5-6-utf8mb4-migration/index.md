@@ -76,7 +76,7 @@ Specified key was too long; max key length is 767 bytes
 
 ## 고통의 연속
 
-그래서 왜 MySQL 5.6 때문에 고통스럽냐면 MySQL 5.6 까지 기본 row 형식은 compact 이기 때문이다. 앞에 단서가 있었는데 index key prefix 길이 제한은 row 형식에 따라 달라진다. redundant, compact 인 경우 상한은 767 바이트이며 dynamic, compressed 인 경우 innodb_large_prefix 옵션이 적용되어 상한은 3072 바이트이다 \[3\]\[5\]\[7\]. 그래서 MySQL 에서 index key prefix 길이 제한의 기본값은 767 바이트가 된다.
+그래서 왜 MySQL 5.6 때문에 고통스럽냐면 MySQL 5.6 까지 기본 row 형식은 compact 이기 때문이다. 앞에 단서가 있었는데 index key prefix 길이 제한은 row 형식에 따라 달라진다. redundant, compact 인 경우 상한은 767 바이트이며 dynamic, compressed 인 경우 innodb_large_prefix 옵션이 적용되어 상한은 3072 바이트이다 \[3\]\[5\]\[7\]. 그래서 MySQL 5.6 에서 index key prefix 길이 제한의 기본값은 767 바이트가 된다.
 
 MySQL 5.7 의 경우 innodb_large_prefix 옵션을 아예 없애 버렸으며 기본 row 형식이 (innodb_default_row_format) dynamic 이고, MySQL 8.0 에서는 아예 innodb_large_prefix 옵션이 없어졌으며 기본 row 형식은 마찬가지로 dynamic 이다.
 
