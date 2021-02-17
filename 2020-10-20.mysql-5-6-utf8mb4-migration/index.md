@@ -1,4 +1,4 @@
-Trouble ID `2020-10-20.mysql-5-7-utf8mb4-migration`
+Trouble ID `2020-10-20.mysql-5-6-utf8mb4-migration`
 
 # MySQL 5.6 `utf8mb4` 마이그레이션
 
