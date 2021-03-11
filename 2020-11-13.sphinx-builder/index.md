@@ -171,10 +171,10 @@ $ source ./venv/bin/activate
 +-- Makefile
 +-- requirements.txt
 +-+ source
-| +-+ conf.py
-| +-+ index.rst
-| +-+ _static/
-| +-+ _templates/
+| +-- conf.py
+| +-- index.rst
+| +-- _static/
+| +-- _templates/
 +-+ venv/
   +-- ...
 ```
