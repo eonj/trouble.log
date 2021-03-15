@@ -1,6 +1,14 @@
 힘든 시기가 되어 친구도 없어질 때, 저는 물난리 위에 당신이 딛고 설 다리가 될게요.
 
-<div style="position: relative; padding-bottom: 56.25%; overflow: hidden; height: 0;"><iframe style="position: absolute; top: 0; left: 0; right: 0; width: 100%; height: 100%; max-width: 100%; border: 0; background: white;" width="560" height="315" src="https://www.youtube.com/embed/WrcwRt6J32o" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<iframe
+  style="max-width: 100%; height: auto;"
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/WrcwRt6J32o"
+  frameborder="0"
+  allow="autoplay; encrypted-media"
+  allowfullscreen>
+</iframe>
 
 난리로그.
 
