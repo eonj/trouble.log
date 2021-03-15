@@ -1,17 +1,12 @@
-힘들어지고 친구가 없어졌을 때, 불안한 물 위에 다리처럼 놓여 있을게요.
+힘든 시기가 되어 친구도 없어질 때, 저는 물난리 위에 당신이 딛고 설 다리가 될게요.
 
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/WrcwRt6J32o"
-  frameborder="0"
-  allow="autoplay; encrypted-media"
-  allowfullscreen>
-</iframe>
+<div style="position: relative; padding-bottom: 56.25%; overflow: hidden; height: 0;"><iframe style="position: absolute; top: 0; left: 0; right: 0; width: 100%; height: 100%; max-width: 100%; border: 0; background: white;" width="560" height="315" src="https://www.youtube.com/embed/WrcwRt6J32o" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
-알파벳에는 S가 T를 앞서 나오지만 인생은 trouble에 따르는 troubleshooting의 연속이다.
+난리로그.
 
-그냥 오늘 한 일 정리. 두서없이. 프로그래밍 관련. 작은 것들.
+알파벳에는 S가 T를 앞서 나오지만 인생은 trouble에 따르는 troubleshooting의 연속이라서.
+
+그냥 오늘 한 일 정리. 두서없이. 프로그래밍 관련 (아닐 수도 있음). 작은 것들.
 
 ## 글 목록
 
