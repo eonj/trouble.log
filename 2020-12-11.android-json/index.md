@@ -117,3 +117,57 @@ org.json 라이브러리의 동작을 정상으로 간주하고 싶을 수도 �
 아무튼 Maven 추이적 의존성을 대충 쓰는 게 이럴 때 문제가 되는데, 나도 모르는 사이에 `org.json:json` 라이브러리가 추가되어 `org.json.*` 클래스패스가 오염되고 기존에 Android 런타임 구현을 쓰던 우리 코드가 자동으로 외래 라이브러리 구현을 쓰도록 변해 버렸기 때문이다.
 
 앞으로는 의존성 트리를 분석해서 라이브러리 의존성 트리가 요구사항을 제대로 만족하는지를 주기적으로 검사할 방법이 필요할 것 같다.
+
+## What is done
+
+(Update @ May 2020)
+
+Maven dependency 로 (transitive dependency 포함) org.json 라이브러리가 포함된 경우 빌드 실패하게 한다.
+
+루트 프로젝트의 build.gradle (Gradle Groovy DSL):
+
+```
+subprojects {
+    configurations.all {
+        resolutionStrategy {
+        	eachDependency { details ->
+        		if (details.requested.group == 'org.json' && details.requested.name == 'json') {
+        		    throw new RuntimeException('prohibted dep found org.json:json. please exclude from deps.')
+        		}
+        	}
+        }
+    }
+}
+```
+
+build.gradle.kts (Gradle Kotlin DSL):
+
+```
+subprojects {
+    configurations.all {
+    	resolutionStrategy {
+    		eachDependency {
+        		if (this.requested.group == "org.json" && this.requested.name == "json") {
+    			    throw RuntimeException("prohibited dep found org.json:json. please exclude from deps.")
+    			}
+    		}
+    	}
+    }
+}
+```
+
+이 방법은 기존에 이런 상황에서 사용되던 silent total exclusion 을 개선한 것이다. 외부 라이브러리를 참조하다 보면 transitive dependency 버전이 안 맞아서 간혹 빌드가 아예 안 되거나 런타임에 크래시가 발생하는 경우가 있는데, Android 의 경우 Android Support 라이브러리나 AndroidX 라이브러리 버전에 자체적으로 의존성을 갖고 있는 외부 라이브러리의 경우에 이런 문제를 겪는다.
+
+아래 코드는 이전에 실제로 쓰이던 빌드스크립트이다. (Gradle Groovy DSL, 'com.android.application' 서브프로젝트)
+
+```
+configurations {
+    all*.exclude group: 'com.android.support', module: 'animated-vector-drawable'
+}
+```
+
+이는 특정 Android Support 라이브러리의 버전에 따라 AnimatedVectorDrawable 클래스의 잘못된 버전이 로드되는 것만으로 앱에 크래시가 발생하던 것을 대응한 것인데, 원칙적으로 잘못된 대응이다. 이 코드는 연원이 잊혀진 채, 나중에 AnimatedVectorDrawable 이 실제로 쓰여야 하는 시점에 XML res load 에 실패하고 크래시가 발생하는데 그 이유는 쉽게 발견되지 않는 황당한 빌드를 만들게 되었다.
+
+어느 코드에서든 참조가 발생하는 클래스라면 웬만하면 클래스패스에 포함되는 게 맞고, 의존성을 제외할 땐 명확한 범위가 없다면 아무도 모르는 채로 필요한 클래스가 빠질 수 있을 것이다.  따라서 org.json:json 문제는 Android 런타임과 대립하는 라이브러리로 인한 것임을 꾸준히 확인하고, 이를 위해 번거롭더라도 모듈 의존성 구문 각각에 직접 exclude 를 달아 주도록 하는 게 맞을 것이다.
+
+org.json:json 이 발견되었을 때 빌드 실패를 내기만 하는 구문은 이런 이유로 만들어졌다. 가능하면 얼토당토않은 exclude 가 제때 제거되지 않고 유지되고 있어서 크래시 위험이 있다거나 하는 부분도 빌트 툴체인이 탐지해 줄 수 있으면 좋겠는데, 이건 또 다음으로 미뤄야 할 것 같다. 할 일이 많다.
