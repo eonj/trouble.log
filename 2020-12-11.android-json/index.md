@@ -130,11 +130,11 @@ Maven dependency 로 (transitive dependency 포함) org.json 라이브러리가 
 subprojects {
     configurations.all {
         resolutionStrategy {
-        	eachDependency { details ->
-        		if (details.requested.group == 'org.json' && details.requested.name == 'json') {
-        		    throw new RuntimeException('prohibted dep found org.json:json. please exclude from deps.')
-        		}
-        	}
+            eachDependency { details ->
+                if (details.requested.group == 'org.json' && details.requested.name == 'json') {
+                    throw new RuntimeException('prohibted dep found org.json:json. please exclude from deps.')
+                }
+            }
         }
     }
 }
@@ -145,13 +145,13 @@ build.gradle.kts (Gradle Kotlin DSL):
 ```
 subprojects {
     configurations.all {
-    	resolutionStrategy {
-    		eachDependency {
-        		if (this.requested.group == "org.json" && this.requested.name == "json") {
-    			    throw RuntimeException("prohibited dep found org.json:json. please exclude from deps.")
-    			}
-    		}
-    	}
+        resolutionStrategy {
+            eachDependency {
+                if (this.requested.group == "org.json" && this.requested.name == "json") {
+                    throw RuntimeException("prohibited dep found org.json:json. please exclude from deps.")
+                }
+            }
+        }
     }
 }
 ```
