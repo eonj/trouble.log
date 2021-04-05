@@ -25,3 +25,4 @@
 * [2020-10-20.mysql-5-6-utf8mb4-migration](./2020-10-20.mysql-5-6-utf8mb4-migration/)
 * [2019-08-22.gradle-deps-closure](./2019-08-22.gradle-deps-closure/)
 * [2019-08-14.aws-jar-nsme](./2019-08-14.aws-jar-nsme/)
+* [2019-06-21.wow-much-generic-collection](./2019-06-21.wow-much-generic-collection)
