@@ -18,6 +18,7 @@
 
 ## 글 목록
 
+* [2021-05-02.nginx-revproxy-for-confluence](./2021-05-02.nginx-revproxy-for-confluence)
 * [2021-04-01.moshi-kapt-test](./2021-04-01.moshi-kapt-test)
 * [2020-12-16.vim-in-iterm2-3-4-2](./2020-12-16.vim-in-iterm2-3-4-2/)
 * [2020-12-11.android-json](./2020-12-11.android-json/)
