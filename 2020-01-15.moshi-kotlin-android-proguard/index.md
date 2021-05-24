@@ -12,7 +12,7 @@ Trouble ID `2020-01-25.moshi-kotlin-android-proguard`
 
 ## 무슨 일이 있었길래?
 
-`moshi-kotlin` (`moshi-kotlin-reflect`) 과 `moshi-kotlin-codegen`. 잘 쓰던 `moshi-kotlin` 1.8.0 을 제거하고 `moshi-kotlin-codegen` 1.8.0 으로 교체하며 R8 ProGuard file 에 아래 줄을 추가했다.
+`moshi-kotlin` (`moshi-kotlin-reflect`) 과 `moshi-kotlin-codegen`. 잘 쓰던 `moshi-kotlin` 1.8.0 을 제거하고 `moshi-kotlin-codegen` 1.8.0 으로 교체하며 R8 ProGuard 파일에 아래 줄을 추가했다.
 
 ```
 -keep class com.squareup.moshi.kotlin.reflect.** { *; }
@@ -38,7 +38,7 @@ Trouble ID `2020-01-25.moshi-kotlin-android-proguard`
 
 사실 잘 쓰고 있었던 건 아니다. release 빌드에서 `moshi-kotlin` 의 `KotlinJsonAdapterFactory` 와 기타등등이 꽤 말썽을 부려서 앱 크래시를 냈다. 분명히 Moshi 와 관련 있는 클래스와 메서드와 프로퍼티에 대고 무차별로 `@Keep` 을 달아 뒀는데 소용이 없었다. (이 부분은 아직도 미스테리이다&hellip; 안타깝게도 제대로 파고들어서 빈틈을 찾아낼 시간이 없었다.)
 
-여기에서 끝이 아니고, `moshi-kotlin-codegen` 의 경우, Kotlin Compiler 가 Jetifier 를 만나 문제를 일으키므로, `gradle.properties` 를 만져야 한다. 아래 라인이 있는 경우,
+여기에서 끝이 아니고, `moshi-kotlin-codegen` 의 경우, Kotlin 컴파일러가 Jetifier 를 만나 문제를 일으키므로, `gradle.properties` 를 만져야 한다. 아래 라인이 있는 경우,
 
 ```
 android.enableJetifier=true
@@ -54,9 +54,9 @@ android.jetifier.blacklist=kotlin-compiler-embeddable-.*\\.jar
 
 ## Android ProGuard (R8)
 
-Android 빌드 툴체인은 원래 Guardsquare 사의 ProGuard 라는 제품을 난독화 도구로 채용했다. ProGuard 는 Java 쪽에서 꽤 유명한 난독화 표준 도구이고 한동안 ProGuard 는 잘 쓰였다.
+Android 빌드 툴체인은 원래 Guardsquare 사의 [ProGuard](<https://www.guardsquare.com/proguard>) 라는 제품을 난독화 도구로 채용했다 ([ProGuard @ GH](<https://github.com/Guardsquare/proguard>)). ProGuard 는 Java 쪽에서 꽤 유명한 난독화 표준 도구이고 한동안 ProGuard 는 Android 에서도 잘 쓰였다.
 
-2017 년부터 Android SDK 에서 빌드 파이프라인을 개선하면서 ProGuard 가 R8 에 자리를 내주게 된다. AAPT 가 AAPT2 로, DX 가 D8 로 교체되는 대규모 변화 속에서, 비슷한 시기에 사람들에게 널리 퍼진 인식이 있었다: 빌드 툴은 서로 입출력만 명확히 알고 나머지에는 관심 끄는 툴체인인 것보다, 각자의 내부 동작에 대해 상호 공유가 이루어지는 툴세트인 것이 더 나은 방식이라는 것이다. 그렇게 2018 년에 D8 은 Java 8 디슈가링 프로세스에 포함되었고 2019 년에는 R8 가 등장해 ProGuard 를 대체하면서 D8 을 포함하는 단일 도구가 되었다.
+2017 년부터 Android SDK 에서 빌드 파이프라인을 개선하면서 ProGuard 가 R8 에 자리를 내주게 된다. AAPT 가 AAPT2 로, DX 가 D8 로 교체되는 대규모 변화 속에서, 비슷한 시기에 사람들에게 널리 퍼진 인식이 있었다: 빌드 툴은 서로 입출력만 명확히 알고 나머지에는 관심 끄는 툴체인인 것보다, 각자의 내부 동작에 대해 상호 공유가 이루어지는 툴세트인 것이 더 나은 결과를 주는 방식이라는 것이다. 그렇게 2018 년에 D8 은 Java 8 디슈가링 프로세스에 포함되었고 2019 년에는 R8 가 등장해 ProGuard 를 대체하면서 D8 을 포함하는 단일 도구가 되었다.
 
 원래 ProGuard 가 어떤 도구인지를 조금 설명해야 할 것 같다. ProGuard 는 Java 클래스파일에서 심볼 리매핑을 하는 도구이고 JAR 파일의 크기를 획기적으로 줄여 준다고 알려져 있다. 그런데 ProGuard 는 코드 축소<sup>code shrinking</sup>도 하고 최적화<sup>optimize</sup>도 한다.
 
