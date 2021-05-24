@@ -12,7 +12,7 @@ Trouble ID `2020-01-25.moshi-kotlin-android-proguard`
 
 ## 무슨 일이 있었길래?
 
-`moshi-kotlin` (`moshi-kotlin-reflect`) 과 `moshi-kotlin-codegen`. 잘 쓰던 `moshi-kotlin` 1.8.0 을 제거하고 `moshi-kotlin-codegen` 1.8.0 으로 교체하며 R8 Proguard file 에 아래 줄을 추가했다.
+`moshi-kotlin` (`moshi-kotlin-reflect`) 과 `moshi-kotlin-codegen`. 잘 쓰던 `moshi-kotlin` 1.8.0 을 제거하고 `moshi-kotlin-codegen` 1.8.0 으로 교체하며 R8 ProGuard file 에 아래 줄을 추가했다.
 
 ```
 -keep class com.squareup.moshi.kotlin.reflect.** { *; }
@@ -95,17 +95,17 @@ Android 빌드 툴체인은 원래 Guardsquare 사의 ProGuard 라는 제품을 
 
 코드 축소나 리소스 축소에 난독화가 개입하면 문제는 더욱 어려워진다. 난독화는 기본적으로 심볼 리매핑을 수행하는데, 이 과정에서 심볼 참조를 누락해서 일부 심볼을 리매핑하지 않는다면 마찬가지로 앱 크래시를 유발할 수 있게 된다. 반영<sup>reflection</sup>을 사용하는 코드는 우리 생각보다 꽤 많은 곳에 이미 침투해 있고, 코드 축소나 리소스 축소 과정에서 인식된 느슨한 심볼 참조가 난독화 과정에서 검토되는 심볼 참조와 긴밀하게 연계되지 않는다면, 이런 비극적 결과는 거의 필연이다.
 
-## Proguard 파일
+## ProGuard 파일
 
-이 부분을 회피하기 위해 Proguard 시절부터 있던 것이 Proguard 파일이다. Proguard 파일의 기본은 코드 축소나 심볼 리매핑 등에 예외를 지정하는 구문으로 되어 있다. 아래와 같은 것들이 대표적이다.
+이 부분을 회피하기 위해 ProGuard 시절부터 있던 것이 ProGuard 파일이다. ProGuard 파일의 기본은 코드 축소나 심볼 리매핑 등에 예외를 지정하는 구문으로 되어 있다. 아래와 같은 것들이 대표적이다.
 
 * `-keep`
 * `-keepclassmembers`
 * `-keepclasseswithmembers`
 
-전체적으로는 `-dontshrink`, `-dontoptimize`, `-dontobfuscate` 등 Proguard 기능 일부를 끌 수 있게 해 주기도 한다.
+전체적으로는 `-dontshrink`, `-dontoptimize`, `-dontobfuscate` 등 ProGuard 기능 일부를 끌 수 있게 해 주기도 한다.
 
-Android 빌드스크립트인`build.gradle` 에서 Proguard 파일은 `proguardFiles` 구문을 이용해 지정된다. Android 프로젝트를 처음 생성하면 이 `proguardFiles` 구문에 `getDefaultProguardFile("proguard-android.txt")` 이 기본 제공된다. 이 내용을 먼저 살펴보자.
+Android 빌드스크립트인`build.gradle` 에서 ProGuard 파일은 `proguardFiles` 구문을 이용해 지정된다. Android 프로젝트를 처음 생성하면 이 `proguardFiles` 구문에 `getDefaultProguardFile("proguard-android.txt")` 이 기본 제공된다. 이 내용을 먼저 살펴보자.
 
 * 앞서 설명한, 특히 골치아픈 리소스 참조 부분을 코드 축소와 심볼 리매핑으로부터 보호한다.
 
@@ -177,7 +177,7 @@ Android 빌드스크립트인`build.gradle` 에서 Proguard 파일은 `proguardF
   -allowaccessmodification
   ```
 
-이 파일은 원래 Android SDK 에서 SDK tools 의 일부로 `tools/proguard/proguard-android.txt` 에 제공되는 Proguard 파일이었다. 그러나 만약 이 부분에 문제가 생긴다고 하면, SDK tools 보다는 SDK build-tools 가 SDK platforms 에 알맞게 동작하지 않은 버그이므로, `tools` 가 아니라&hellip; Gradle 빌드스크립트를 담당하는 `com.android.build.tools:gradle` 에서 매번 생성하고 있다. 뭐라고?
+이 파일은 원래 Android SDK 에서 SDK tools 의 일부로 `tools/proguard/proguard-android.txt` 에 제공되는 ProGuard 파일이었다. 그러나 만약 이 부분에 문제가 생긴다고 하면, SDK tools 보다는 SDK build-tools 가 SDK platforms 에 알맞게 동작하지 않은 버그이므로, `tools` 가 아니라&hellip; Gradle 빌드스크립트를 담당하는 `com.android.build.tools:gradle` 에서 매번 생성하고 있다. 뭐라고?
 
 사실이다. 위 내용은 Android Gradle Plugin JAR 파일의 `com/android/build/gradle/proguard-common.txt` 와 `com/android/build/gradle/proguard-optimizations.txt` 에서 가져왔다. `tools/proguard/proguard-android.txt` 는 더이상 업데이트되지 않고 이 파일은 AndroidX `@Keep` 어노테이션에 대한 이해가 없다.
 
@@ -197,13 +197,13 @@ Android Studio (IDEA Android Support Plugin) 버전과 AGP 버전 그리고 buil
 
 ## 무슨 말을 하려고 했더라
 
-Moshi 때문에 R8 Proguard 파일을 수정하다가 여기까지 왔다. L8 (D8/R8) 의 거대하고 불투명한 동작, Proguard 파일까지 관리하는 AGP, 이 둘의 동작에 기대어 대응할 수 있는 OS API level. 평범한 Android 앱 프로그래머의 입장에서 이런 문제들이 응집되어 Proguard 파일을 직접 편집해야 하는 지점에서 나타난다. 웬만하면 앱은 정상 빌드되고 정상 작동할 거다; 최적화와 난독화 계통을 거치지 않는다는 가정 하에 말이지. Android 개발 도구는 Kotlin 을 공식 지원하고 있고, 특히 Android Platform API 보다는 AndroidX API 에서 Jetpack Compose 처럼 Kotlin 의존성이 필수인 부분들이 세일즈 포인트가 되고 있으나, 정상 빌드를 만들려면 우선 Proguard 파일에서 Kotlin 대응부터 직접 해야 한다.
+Moshi 때문에 R8 ProGuard 파일을 수정하다가 여기까지 왔다. L8 (D8/R8) 의 거대하고 불투명한 동작, ProGuard 파일까지 관리하는 AGP, 이 둘의 동작에 기대어 대응할 수 있는 OS API level. 평범한 Android 앱 프로그래머의 입장에서 이런 문제들이 응집되어 ProGuard 파일을 직접 편집해야 하는 지점에서 나타난다. 웬만하면 앱은 정상 빌드되고 정상 작동할 거다; 최적화와 난독화 계통을 거치지 않는다는 가정 하에 말이지. Android 개발 도구는 Kotlin 을 공식 지원하고 있고, 특히 Android Platform API 보다는 AndroidX API 에서 Jetpack Compose 처럼 Kotlin 의존성이 필수인 부분들이 세일즈 포인트가 되고 있으나, 정상 빌드를 만들려면 우선 ProGuard 파일에서 Kotlin 대응부터 직접 해야 한다.
 
 ```
 -keep class kotlin.Metadata { *; }
 ```
 
-이렇게 작성된 Proguard 파일의 연원은 점차 잊혀지며 이런 라인들은 L8 의 거대하고 불투명한 동작에 맞서 보수적으로 복붙되어 끝없이 늘어난다. 그걸로 끝나면 좋은데 악마같은 디테일이 더 나온다. Android 라이브러리 프로젝트에서 `consumerProguardFiles` 에 지정한 Proguard 파일은 Maven 저장소에 JAR 파일 대신 업로드되는 AAR 파일에 `proguard.txt` 로 포함되어 있다. 이 `proguard.txt` 는 거역할 수 없는 질서로 작용한다. 다음, R8 는 `-keep` 처리되어 있는 클래스들을 일종의 진입점<sup>entrypoint</sup>으로 인식하고, multidex 빌드에서 진입점 클래스들은 가능한 한 많이 main DEX 파일에 지정된다. 이후 D8 가 Java 8 람다 디슈가링을 한다. 보수적인 라이브러리 프로젝트 메인테이너의 AAR 파일에서 유입된 수많은 `-keep` 구문이 아주 많은 R8 진입점 클래스를 만들어 내고, D8 의 Java 8 람다 디슈가링 결과가 R8 의 예측과 어긋나면, main DEX 파일의 method count 가 DEX 파일 한계를 넘어서, 정말 말도 안 되게도 multidex 프로젝트에서 이런 에러를 만난다.
+이렇게 작성된 ProGuard 파일의 연원은 점차 잊혀지며 이런 라인들은 L8 의 거대하고 불투명한 동작에 맞서 보수적으로 복붙되어 끝없이 늘어난다. 그걸로 끝나면 좋은데 악마같은 디테일이 더 나온다. Android 라이브러리 프로젝트에서 `consumerProguardFiles` 에 지정한 ProGuard 파일은 Maven 저장소에 JAR 파일 대신 업로드되는 AAR 파일에 `proguard.txt` 로 포함되어 있다. 이 `proguard.txt` 는 거역할 수 없는 질서로 작용한다. 다음, R8 는 `-keep` 처리되어 있는 클래스들을 일종의 진입점<sup>entrypoint</sup>으로 인식하고, multidex 빌드에서 진입점 클래스들은 가능한 한 많이 main DEX 파일에 지정된다. 이후 D8 가 Java 8 람다 디슈가링을 한다. 보수적인 라이브러리 프로젝트 메인테이너의 AAR 파일에서 유입된 수많은 `-keep` 구문이 아주 많은 R8 진입점 클래스를 만들어 내고, D8 의 Java 8 람다 디슈가링 결과가 R8 의 예측과 어긋나면, main DEX 파일의 method count 가 DEX 파일 한계를 넘어서, 정말 말도 안 되게도 multidex 프로젝트에서 이런 에러를 만난다.
 
 ```
 Too many method references: 65571; max is 65536
@@ -211,8 +211,8 @@ Too many method references: 65571; max is 65536
 
 (Update: 이 문제는 이후 Android 빌드 툴체인 최신 버전에서 수정되었다. 재발할 가능성은 있다.)
 
-솔직히 빌드 재현가능성까지는 바라지도 않는다. 그래도 Proguard 파일은 어떻게 안 될까?
+솔직히 빌드 재현가능성까지는 바라지도 않는다. 그래도 ProGuard 파일은 어떻게 안 될까?
 
-Proguard 파일에 명세되는 내용은 대체로 유형 체계적 제약에 해당한다고 간주할 수 있다. Proguard 를 이용해 빌드된 JAR 바이너리에 나무 털기나 심볼 리매핑같은 과정을 적용할 때, Java (그리고 Kotlin/JVM) 프로그램이 런타임에 정상이도록 하는 기본 원리는 그 프로그램이 컴파일타임에 정상이도록 하는 것이다. 이는 JAR 파일을 클래스패스로 지정해서 컴파일러가 소스 코드마냥 참조하도록 할 수 있기 때문이기도 하며, 컴파일타임에 프로그램의 정합성<sup>consistency</sup>을 점검했다면 런타임에도 그 프로그램의 정합성이 유지되는 것이 일반적인 일이기 때문이다. 그러나 어떤 클래스, 메서드, 필드의 이름과 존재를 유지해 주는 것은 컴파일러가 알 수 없는 수준의 프로그램 정합성을 보존하기도 하며, 이는 컴파일타임에 유형 체계로 점검해 내는 프로그램의 정합성과 본질적으로 다를 것이 없다. 즉 Proguard 파일은 기존 패키지에 보조적인 유형 체계를 이용해 유형 힌트를 도입하는 역할을 하는 셈이다.
+ProGuard 파일에 명세되는 내용은 대체로 유형 체계적 제약에 해당한다고 간주할 수 있다. ProGuard 를 이용해 빌드된 JAR 바이너리에 나무 털기나 심볼 리매핑같은 과정을 적용할 때, Java (그리고 Kotlin/JVM) 프로그램이 런타임에 정상이도록 하는 기본 원리는 그 프로그램이 컴파일타임에 정상이도록 하는 것이다. 이는 JAR 파일을 클래스패스로 지정해서 컴파일러가 소스 코드마냥 참조하도록 할 수 있기 때문이기도 하며, 컴파일타임에 프로그램의 정합성<sup>consistency</sup>을 점검했다면 런타임에도 그 프로그램의 정합성이 유지되는 것이 일반적인 일이기 때문이다. 그러나 어떤 클래스, 메서드, 필드의 이름과 존재를 유지해 주는 것은 컴파일러가 알 수 없는 수준의 프로그램 정합성을 보존하기도 하며, 이는 컴파일타임에 유형 체계로 점검해 내는 프로그램의 정합성과 본질적으로 다를 것이 없다. 즉 ProGuard 파일은 기존 패키지에 보조적인 유형 체계를 이용해 유형 힌트를 도입하는 역할을 하는 셈이다.
 
 개인적으로는 [Definitely Typed](<https://definitelytyped.org/>) 같은 방식이 맞다고 본다. TypeScript 의 경우에는 유형 체계가 처음부터 기존 생태계를 건드리지 않고 보조적인 역할만을 하도록 만들어져 있는데, TypeScript 팀에서 수많은 프로젝트들의 d.ts 파일만 관리하는  프로젝트를 운영하고 있으며 ([Definitely Typed @ GH](<https://github.com/DefinitelyTyped/DefinitelyTyped>)) 이 파일들이 사실상 TypeScript 컴파일러의 tier one 서포트 대상이다. 이론적으로야 새로운 유형체계를 도입한 언어로 코드가 재작성되어 세상을 지배하면 좋겠으나, 이런 결과가 정말 달성되더라도 그게 지독한 악연이 되지 않으려면 여러 가지 가정이 더 필요하다. 안타깝지만 패키지의 유형 체계적 제약에 대해서는 생산자보다 소비자가 더 정확히 알고 있을 가능성이 크고, 소비자에게는 선택권이 필요한 일이 생긴다.
