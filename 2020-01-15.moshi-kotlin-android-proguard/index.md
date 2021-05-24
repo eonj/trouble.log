@@ -169,7 +169,7 @@ Android 빌드스크립트인`build.gradle` 에서 Proguard 파일은 `proguardF
 
 * 기타 등등
 
-* `proguard-android-txt` 와 `proguard-android-optimize.txt` 의 차이. `proguard-android-optimize.txt` 에만 이런 부분이 삽입된다.
+* `proguard-android.txt` 와 `proguard-android-optimize.txt` 의 차이. `proguard-android-optimize.txt` 에만 이런 부분이 삽입된다.
 
   ```
   -optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
