@@ -126,7 +126,7 @@ Maven dependency 로 (transitive dependency 포함) org.json 라이브러리가 
 
 루트 프로젝트의 build.gradle (Gradle Groovy DSL):
 
-```
+```groovy
 subprojects {
     configurations.all {
         resolutionStrategy {
@@ -142,7 +142,7 @@ subprojects {
 
 build.gradle.kts (Gradle Kotlin DSL):
 
-```
+```kotlin
 subprojects {
     configurations.all {
         resolutionStrategy {
