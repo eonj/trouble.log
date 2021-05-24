@@ -948,7 +948,7 @@ object Version {
 ```
 androidGradlePluginVersion=4.2.1
 kotlinVersion=1.5.0
-releaseKeystorePath=.gitignore
+releaseKeystorePath=
 releaseKeystorePass=
 releaseKeyAlias=
 releaseKeyPass=
