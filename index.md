@@ -18,15 +18,15 @@
 
 ## 글 목록
 
-* [2021-05-24.gradle-kotlin-dsl-gradual-migration-android](./2021-05-24.gradle-kotlin-dsl-gradual-migration-android)
-* [2021-05-02.nginx-revproxy-for-confluence](./2021-05-02.nginx-revproxy-for-confluence)
-* [2021-04-01.moshi-kapt-test](./2021-04-01.moshi-kapt-test)
+* [2021-05-24.gradle-kotlin-dsl-gradual-migration-android](./2021-05-24.gradle-kotlin-dsl-gradual-migration-android/)
+* [2021-05-02.nginx-revproxy-for-confluence](./2021-05-02.nginx-revproxy-for-confluence/)
+* [2021-04-01.moshi-kapt-test](./2021-04-01.moshi-kapt-test/)
 * [2020-12-16.vim-in-iterm2-3-4-2](./2020-12-16.vim-in-iterm2-3-4-2/)
 * [2020-12-11.android-json](./2020-12-11.android-json/)
 * [2020-11-13.sphinx-builder](./2020-11-13.sphinx-builder/)
 * [2020-10-20.mysql-5-6-utf8mb4-migration](./2020-10-20.mysql-5-6-utf8mb4-migration/)
-* [2020-01-15.moshi-kotlin-android-proguard](./2020-01-15.moshi-kotlin-android-proguard)
-* [2020-06-25.reactivex-conversion-overview](./2020-06-25.reactivex-conversion-overview)
+* [2020-01-15.moshi-kotlin-android-proguard](./2020-01-15.moshi-kotlin-android-proguard/)
+* [2020-06-25.reactivex-conversion-overview](./2020-06-25.reactivex-conversion-overview/)
 * [2019-08-22.gradle-deps-closure](./2019-08-22.gradle-deps-closure/)
 * [2019-08-14.aws-jar-nsme](./2019-08-14.aws-jar-nsme/)
-* [2019-06-21.wow-much-generic-collection](./2019-06-21.wow-much-generic-collection)
+* [2019-06-21.wow-much-generic-collection](./2019-06-21.wow-much-generic-collection/)
