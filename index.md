@@ -29,5 +29,5 @@
 * [2020-06-25.reactivex-conversion-overview](./2020-06-25.reactivex-conversion-overview/)<br />(내가 보려고 만든) ReactiveX 유형 변환
 * [2019-08-22.gradle-deps-closure](./2019-08-22.gradle-deps-closure/)<br />Gradle 빌드스크립트가 dependency closure 때문에 너무 길어짐
 * [2019-08-14.aws-jar-nsme](./2019-08-14.aws-jar-nsme/)<br />AWS Java 런타임에서 NoSuchMethodError 의 원인 찾기
-* [2019-06-21.wow-much-generic-collection](./2019-06-21.wow-much-generic-collection/)<br />와! 제네릭 컬렉션!
+* [2018-01-10.java-8-problematic-lambda-invokedyamic](./2018-01-10.java-8-problematic-lambda-invokedyamic/)<br />Java 버전을 올리고 싶어요
 
