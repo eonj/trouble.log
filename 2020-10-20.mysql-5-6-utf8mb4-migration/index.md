@@ -76,9 +76,9 @@ Specified key was too long; max key length is 767 bytes
 
 ## 고통의 연속
 
-그래서 왜 MySQL 5.6 때문에 고통스럽냐면 MySQL 5.6 까지 기본 row 형식은 compact 이기 때문이다. 앞에 단서가 있었는데 index key prefix 길이 제한은 row 형식에 따라 달라진다. redundant, compact 인 경우 상한은 767 바이트이며 dynamic, compressed 인 경우 innodb_large_prefix 옵션이 적용되어 상한은 3072 바이트이다 \[3\]\[5\]\[7\]. 그래서 MySQL 5.6 에서 index key prefix 길이 제한의 기본값은 767 바이트가 된다.
+그래서 왜 MySQL 5.6 때문에 고통스럽냐면 MySQL 5.6 까지 기본 row 형식은 compact 이기 때문이다. 앞에 단서가 있었는데 index key prefix 길이 제한은 row 형식에 따라 달라진다. redundant, compact 인 경우 상한은 767 바이트이며 dynamic, compressed 인 경우 innodb_large_prefix 옵션이 적용되어 상한은 3072 바이트이다 \[7\]. 그래서 MySQL 5.6 에서 index key prefix 길이 제한의 기본값은 767 바이트가 된다.
 
-MySQL 5.7 의 경우 innodb_large_prefix 옵션을 아예 없애 버렸으며 기본 row 형식이 (innodb_default_row_format) dynamic 이고, MySQL 8.0 에서는 아예 innodb_large_prefix 옵션이 없어졌으며 기본 row 형식은 마찬가지로 dynamic 이다.
+MySQL 5.7 의 경우 innodb_large_prefix 옵션 사용을 삼가도록 하였으며 기본 row 형식이 (innodb_default_row_format) dynamic 이고 \[5\], MySQL 8.0 에서는 아예 innodb_large_prefix 옵션을 아예 없애 버렸으며 기본 row 형식은 마찬가지로 dynamic 이다 \[3\]\[10\].
 
 나는 2020 년에 index key prefix 길이 제한이 767 바이트인 낡은 DBMS 때문에 대단치도 않은 DB 스키마에 이상한 고통을 받고 있는 것이다. 게다가 하필이면 `utf8mb3` 같은 낡아빠진 인코딩 때문에 말이다. 유니코드가 UCS-2 범위인 BMP 를 초월할 것으로 여겨져 그 대안으로 UTF-16 이 만들어진 것이 벌써 1996 년 7 월이다. 스토리지 절약한다고 `euckr` 쓰던 시대도 아니고 도대체 누가 `utf8mb3` 로 테이블을 만든단 말인가?
 
@@ -124,21 +124,44 @@ MySQL 이라는 RDBMS 가 꼭 어떤 필드에 정상 UTF-8 문자열만 (그게
 
 > **Note**
 >
-> The utf8mb3 character set is deprecated and you should expect it to be removed in a future MySQL release. Please use utf8mb4 instead. Although utf8 is currently an alias for utf8mb3, at some point utf8 is expected to become a reference to utf8mb4. To avoid ambiguity about the meaning of utf8, consider specifying utf8mb4 explicitly for character set references instead of utf8.
+> The `utf8mb3` character set is deprecated and you should expect it to be removed in a future MySQL release. Please use `utf8mb4` instead. Although `utf8` is currently an alias for `utf8mb3`, at some point `utf8` is expected to become a reference to `utf8mb4`. To avoid ambiguity about the meaning of `utf8`, consider specifying `utf8mb4` explicitly for character set references instead of `utf8`.
 
 \[2\] Ibid. 8.4.7 Limits on Table Column Count and Row Size. <https://dev.mysql.com/doc/refman/8.0/en/column-count-limit.html>
 
 \[3\] Ibid. 15.22 InnoDB Limits. <https://dev.mysql.com/doc/refman/8.0/en/innodb-limits.html>
 
+> - The index key prefix length limit is 3072 bytes for InnoDB tables that use `DYNAMIC` or `COMPRESSED` row format.
+>
+>   The index key prefix length limit is 767 bytes for `InnoDB` tables that use the `REDUNDANT` or `COMPACT` row format. For example, you might hit this limit with a [column prefix](https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_column_prefix) index of more than 191 characters on a `TEXT` or `VARCHAR` column, assuming a `utf8mb4` character set and the maximum of 4 bytes for each character.
+
+
 \[4\] *MySQL 5.7 Reference Manual.* 8.4.7 Limits on Table Column Count and Row Size. <https://dev.mysql.com/doc/refman/5.7/en/column-count-limit.html>
 
 \[5\] Ibid. 14.23 InnoDB Limits. <https://dev.mysql.com/doc/refman/5.7/en/innodb-limits.html>
+
+> - If [`innodb_large_prefix`](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_large_prefix) is enabled (the default), the index key prefix limit is 3072 bytes for `InnoDB` tables that use the `DYNAMIC` or `COMPRESSED` row format. If [`innodb_large_prefix`](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_large_prefix) is disabled, the index key prefix limit is 767 bytes for tables of any row format.
+>
+>   [`innodb_large_prefix`](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_large_prefix) is deprecated; expect it to be removed in a future MySQL release. [`innodb_large_prefix`](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_large_prefix) was introduced in MySQL 5.5 to disable large index key prefixes for compatibility with earlier versions of `InnoDB` that do not support large index key prefixes.
 
 \[6\] *MySQL 5.6 Reference Manual.* 8.4.7 Limits on Table Column Count and Row Size. <https://dev.mysql.com/doc/refman/5.6/en/column-count-limit.html>
 
 \[7\] Ibid. 14.22 InnoDB Limits. <https://dev.mysql.com/doc/refman/5.6/en/innodb-limits.html>
 
+> - By default, the index key prefix length limit is 767 bytes. See [Section 13.1.13, “CREATE INDEX Statement”](https://dev.mysql.com/doc/refman/5.6/en/create-index.html). For example, you might hit this limit with a [column prefix](https://dev.mysql.com/doc/refman/5.6/en/glossary.html#glos_column_prefix) index of more than 255 characters on a`TEXT` or `VARCHAR` column,assuming a `utf8mb3` character set and the maximum of 3 bytes for each character. When the [`innodb_large_prefix`](https://dev.mysql.com/doc/refman/5.6/en/innodb-parameters.html#sysvar_innodb_large_prefix) configuration option is enabled, the index key prefix length limit is raised to 3072 bytes for `InnoDB` tables that use the `DYNAMIC` or `COMPRESSED` row format.
+
 \[8\] StackOverflow; answering post \# 45535543 on questioning post \# 24365504. <https://stackoverflow.com/a/45535543/2214758>
 
 \[9\] Database Administrators StackExchange; answering post \# 114870 on questioning post \# 114471. <https://dba.stackexchange.com/a/114870/224173>
 
+\[10\] *MySQL 8.0 Release Notes.* Changes in MySQL 8.0.0 (2016-09-12, Development Milestone). <https://dev.mysql.com/doc/relnotes/mysql/8.0/en/news-8-0-0.html>
+
+> - ***Important Change; InnoDB:*** The following `InnoDB` file format configuration options were deprecated in MySQL 5.7.7 and are now removed:
+>
+>   - `innodb_file_format`
+>   - `innodb_file_format_check`
+>   - `innodb_file_format_max`
+>   - `innodb_large_prefix`
+>
+>   File format configuration options were necessary for creating tables compatible with earlier versions of `InnoDB` in MySQL 5.1. Now that MySQL 5.1 has reached the end of its product lifecycle, these options are no longer required.
+>
+>   The `FILE_FORMAT` column was removed from the [`INNODB_SYS_TABLES`](https://dev.mysql.com/doc/refman/5.7/en/information-schema-innodb-sys-tables-table.html) and [`INNODB_SYS_TABLESPACES`](https://dev.mysql.com/doc/refman/5.7/en/information-schema-innodb-sys-tablespaces-table.html) Information Schema tables.
