@@ -1,4 +1,4 @@
-힘든 시기가 되어 친구도 없어질 때, 저는 물난리 위에 당신이 딛고 설 다리가 될게요.
+삶이 힘들고 친구도 안 보일 때, 물난리를 건너실 다리를 몸소 놓아 드릴게요.
 
 <iframe
   style="max-width: 100%; height: auto;"
@@ -10,11 +10,7 @@
   allowfullscreen>
 </iframe>
 
-난리로그.
-
-알파벳에는 S가 T를 앞서 나오지만 인생은 trouble에 따르는 troubleshooting의 연속이라서.
-
-그냥 오늘 한 일 정리. 두서없이. 프로그래밍 관련 (아닐 수도 있음). 작은 것들. like TIL.
+난리록(亂離錄). 그냥 두서없이 오늘 한 일 정리. 프로그래밍 관련 작은 것들 like TIL. 알파벳에서는 S가 T를 앞서 나오지만 인생은 trouble에 따르는 troubleshooting의 연속이라서.
 
 ## 글 목록
 
