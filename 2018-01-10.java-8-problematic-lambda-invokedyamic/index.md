@@ -1,5 +1,7 @@
 Trouble ID `2018-01-10.java-8-problematic-lambda-invokedynamic`
 
+Note: 이 글은 Tumblr 로 발행되었으나 (<https://a4.aurynj.net/post/169563364223>), Tumblr 마크다운 에디터의 고질적 문제로부터 도망쳐서 이곳으로 왔습니다.
+
 # Java 버전을 올리고 싶어요
 
 Java 버전과 관련된 이슈에는 두 가지가 있다. 하나는 `.java` 소스 코드 파일에서 Java 언어의 버전을 결정하는 JDK의 Java 컴파일러 `javac`의 버전이고, 다른 하나는 `.class` 바이너리 코드 파일에 따라 JVM의 버전을 결정하는 JRE의 Java 런타임 `java`의 버전이다.
@@ -58,7 +60,7 @@ JVM 6 이하에서 이미 잘 돌아가는 함수형 언어인 Scala, Clojure, K
 
 `invokedynamic`은 느리다. Android의 Dalvik VM은 `invokedynamic`을 추가로 포함하지 않기로 결정했고 대신 `invoke-polymorphic`, `invoke-custom`이라는 제약된 형태의 명령어를 포함하게 되었다. 다만 낮은 API 수준의 Android용 소스 코드에서도 람다나 메서드 핸들, 콜 사이트를 포함한 Java 8 기능 일부를 쓸 방법이 있다. 람다의 경우 Retrolambda가 있고, 메서드 핸들까지 쓰는 경우 Android 프로젝트 빌드 툴체인의 desugar 유틸리티가 있다. desugar 유틸리티는 `invokedynamic`을 포함하는 Java 8 상위 호환 class 파일을 Java 7 머신에 호환되는 class 파일로 바꾸어 준다. 이후 dex로 변환되는 과정은 이전과 같다.
 
-JVM의 초창기 목표였던 동적 언어 지원은 어떨까? 동적 언어는 JVM에서 앞으로 뭐든지 `invokedynamic`으로 돌릴 수 있을 것이다. 사실 동적 언어뿐만 아니라 정적 언어 역시 `invokedynamic`으로 모든 호출을 하도록 컴파일할 수 있을 것이다. 이게 효율적인 방법인가에 대한 답은 자명하다. NetBeans 초창기 아키텍트였던 Jaroslav Tulach의 개인 위키에서는 이에 관해 "망치를 갖고 있으면 모든 문제가 못으로 보인다" 라는 격언을 인용한다. (http://wiki.apidesign.org/wiki/InvokeDynamic)
+JVM의 초창기 목표였던 동적 언어 지원은 어떨까? 동적 언어는 JVM에서 앞으로 뭐든지 `invokedynamic`으로 돌릴 수 있을 것이다. 사실 동적 언어뿐만 아니라 정적 언어 역시 `invokedynamic`으로 모든 호출을 하도록 컴파일할 수 있을 것이다. 이게 효율적인 방법인가에 대한 답은 자명하다. NetBeans 초창기 아키텍트였던 Jaroslav Tulach의 개인 위키에서는 이에 관해 "망치를 갖고 있으면 모든 문제가 못으로 보인다" 라는 격언을 인용한다. (<http://wiki.apidesign.org/wiki/InvokeDynamic>)
 
 Ruby 등의 동적 언어를 돌리기 위한 도움을 JVM에서 꼭 주고 싶었다면, 이를테면 asm.js과 비슷한 방식으로, 기존 JVM 7 명령어 집합을 건드리지 않고 JVM 구현체가 인식할 수 있는 패턴을 주는 방식으로, 그리고 필요에 따라 JVM 구현체와 동적 언어 구현체가 통신할 수 있는 JVM API를 추가하는 방식으로 할 수 있었을 것이다. 실제로 GraalVM 프로젝트의 Truffle을 기반으로 하여 `invokedynamic`을 사용하지 않고 동적 언어를 돌리는 실험이 이루어졌고, `invokedynamic`을 통해 구현된 Ruby에 비해 훨씬 나은 성능을 보였다고 한다.
 

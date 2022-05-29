@@ -12,7 +12,7 @@ ReactiveX 레퍼런스를 보면 `First`, `Last`, `ElementAt` 같은 것들은 �
 
 Download (PNG): [300 ppi](<./20200625.reactivex-types-and-conversion-methods-in-rxjava-2.300ppi.png>) / [1200 ppi](<./20200625.reactivex-types-and-conversion-methods-in-rxjava-2.1200ppi.png>) / [3000 ppi](<./20200625.reactivex-types-and-conversion-methods-in-rxjava-2.3000ppi.png>)
 
-이 그림을 그리는 건 잡생각을 아주 많이 하는 과정이기도 했다. `Take` 연산은, 만약 Java 에서 제네릭유형 인자로 값을 쓸 수 있었다면 이 결과를 `Single` 처럼 별도 유형으로 만들 수 있지 않았을까. `Map` 이나 `Zip` 같은 연산자들은 `Observable<T>` 와 `Observable<U>` 간의 변환이니 그냥 넘어간다 하더라도, `Filter` 는 값에 대한 제약을 만들어 주고 `Delay` 나 `Debounce`/`Throttle`/`Timeout` 같은 건 시간에 대한 제약을 만들어 주는데, 이걸 유용하게 쓸 수 있지 않을까. 의존 유형에서 유형의 일부가 미래에 구체화될 수 있으려면 유형 체계가 어떻게 동작해야 하나, 아니면 린트 레벨에서라도 구분된다면 쓸모있게 만들 수 있지 않을까. 별로 내가 하고 싶지는 않고&hellip;
+이 그림을 그리는 건 잡생각을 아주 많이 하는 과정이기도 했다. `Take` 연산은, 만약 Java 에서 제네릭 유형 인자로 값을 쓸 수 있었다면 이 결과를 `Single` 처럼 별도 유형으로 만들 수 있지 않았을까. `Map` 이나 `Zip` 같은 연산자들은 `Observable<T>` 와 `Observable<U>` 간의 변환이니 그냥 넘어간다 하더라도, `Filter` 는 값에 대한 제약을 만들어 주고 `Delay` 나 `Debounce`/`Throttle`/`Timeout` 같은 건 시간에 대한 제약을 만들어 주는데, 이걸 유용하게 쓸 수 있지 않을까. 의존 유형에서 유형의 일부가 미래에 구체화될 수 있으려면 유형 체계가 어떻게 동작해야 하나, 아니면 린트 레벨에서라도 구분된다면 쓸모있게 만들 수 있지 않을까. 별로 내가 하고 싶지는 않고&hellip;
 
 ## ReactiveX 잡설
 
@@ -20,7 +20,7 @@ Download (PNG): [300 ppi](<./20200625.reactivex-types-and-conversion-methods-in-
 
 ReactiveX 에 대해 찾아 보면 그 유래는 원래 .NET 에서 쓰려고 Microsoft 에서 만든 것이고&hellip; 이런 얘기가 나온다. 개념적으로 들어가면 함수형 반작용적 프로그래밍이라는 (이하 FRP) 프로그래밍 패러다임까지 나오고, 그런 걸 계속 읽다 보면 ReactiveX 라는 게 뭔가 기존에 있던 것과 아주 달라 보일 수 있다. 하지만 대충 기존에 있던 것들과 굉장히 다르게 볼 필요는 없는 것이고, 그럼에도 불구하고 ReactiveX 사용에 조금 주의를 요하는 부분이 생기는데, 잠시 이 부분을 짚어 보자.
 
-원래 Java 나 C\# 의 컬렉션<sup>collection</sup> 내지는 C++ 의 컨테이너<sup>container</sup> 등지에서 쓰는 반복자<sup>iterator</sup>라는 개념이 있다. 이걸 본래 절차적인 문제풀이 과정에서 문법 설탕<sup>syntactic sugar</sup>을 일정하게 만드는 용도로나 사용하는 것이 고작이었다. ReactiveX 는 이것이 비동기적으로 작동할 경우 관찰자 패턴<sup>Observer pattern</sup>과 아주 비슷하다는 점에 착안하여, 제네릭 타입 `Observable<T>` 을 만들고 스케줄러<sup>scheduler</sup>와 람다<sup>lambda</sup>를 도입해 비동기 데이터 흐름을 처리하는 일을 숨쉬듯 쉽게 다룰 수 있게 만들어 둔 것이다. ReactiveX 홈페이지 [reactivex.io](<http://reactivex.io>) 에 보면 실제로 ReactiveX 를 소개하는 모토를 이렇게 적어 두고 있다.
+원래 Java 나 C\# 의 컬렉션<sup>collection</sup> 내지는 C++ 의 컨테이너<sup>container</sup> 등지에서 쓰는 반복자<sup>iterator</sup>라는 개념이 있다. 이걸 본래 절차적인 문제풀이 과정에서 문법 설탕<sup>syntactic sugar</sup>을 일정하게 만드는 용도로나 사용하는 것이 고작이었다. ReactiveX 는 이것이 비동기적으로 작동할 경우 관찰자 패턴<sup>Observer pattern</sup>과 아주 비슷하다는 점에 착안하여, 제네릭 유형 `Observable<T>` 을 만들고 스케줄러<sup>scheduler</sup>와 람다<sup>lambda</sup>를 도입해 비동기 데이터 흐름을 처리하는 일을 숨쉬듯 쉽게 다룰 수 있게 만들어 둔 것이다. ReactiveX 홈페이지 [reactivex.io](<http://reactivex.io>) 에 보면 실제로 ReactiveX 를 소개하는 모토를 이렇게 적어 두고 있다.
 
 > The Observer pattern done right (옳게 된 관찰자 패턴)
 
