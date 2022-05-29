@@ -43,13 +43,7 @@ MySQL 의 문자열 자료 유형인 varchar(n) 역시 바이트 수준에서 �
 create table test_table(test_column varchar(255) primary key) charset utf8mb3;
 ```
 
-이제 *alter table* 쿼리로 table default charset 만 바꿔 보자.
-
-```
-alter table test_table default charset utf8mb4;
-```
-
-결과는 다음과 같다. *show create table* 구문으로 스키마를 보자.
+실행 결과는 다음과 같다. *show create table* 구문으로 스키마를 보자.
 
 ```
 show create table test_table;
@@ -58,6 +52,24 @@ CREATE TABLE `test_table` (
   `test_column` varchar(255) NOT NULL,
   PRIMARY KEY (`test_column`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+----
+```
+
+이제 *alter table* 쿼리로 table default charset 만 바꿔 보자.
+
+```
+alter table test_table default charset utf8mb4;
+```
+
+결과는? 다시 한번 *show create table* 구문을 사용한다.
+
+```
+show create table test_table;
+----
+CREATE TABLE `test_table` (
+  `test_column` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`test_column`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 ----
 ```
 
