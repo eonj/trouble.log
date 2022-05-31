@@ -63,9 +63,9 @@ public class TypeSystemTest {
 
 ## 방법을 찾아봅시다: 함수부터
 
-Java와 같은 JVM 언어이자 함수형 언어인 Scala가 이런 문제를 일찍이 해결하였고 그 방식이 Kotlin에도 일부 적용되었다. Scala에서는 어떤 함수를 사용할 때 그 함수의 인자 유형과 반환 유형을 어떻게 바꾸어 취급해도 되는지에 대해 '공변성'을 이용해 정의한다. 그리고 제네릭 유형 역시 일종의 함수이기 때문에 동일한 논의가 성립한다.
+Java와 같은 JVM 언어이자 함수형 언어인 Scala가 이런 문제를 일찍이 해결하였고 그 방식이 Kotlin에도 일부 적용되었다. Scala에서는 어떤 함수를 사용할 때 그 함수의 인자 유형과 반환 유형을 어떻게 바꾸어 취급해도 되는지에 대해 **공변/반변**<sup>variance</sup>을 이용해 정의한다. 그리고 제네릭 유형 역시 일종의 함수이기 때문에 동일한 논의가 성립한다.
 
-공변성 역시 본래 수학 용어이다. 어떤 공간의 대상을 나타낼 때 우리는 어떤 단위가 되는 것을 정의하고 그 단위들을 잘 조합하면 그 공간의 모든 대상을 나타내기에 모자람이 없도록 한다. 이것을 기저<sup>basis</sup>라고 하는데, 예를 들어서 2차원 평면에서는 `x`축과 `y`축을 정의하게 되며 각 축 단위벡터 `(1, 0)`과 `(0, 1)`을 기저로 정할 수 있다.
+공변/반변 역시 본래 수학 용어이다. 어떤 공간의 대상을 나타낼 때 우리는 어떤 단위가 되는 것을 정의하고 그 단위들을 잘 조합하면 그 공간의 모든 대상을 나타내기에 모자람이 없도록 한다. 이것을 기저<sup>basis</sup>라고 하는데, 예를 들어서 2차원 평면에서는 `x`축과 `y`축을 정의하게 되며 각 축 단위벡터 `(1, 0)`과 `(0, 1)`을 기저로 정할 수 있다.
 
 대체로 어떤 공간이 있다고 해서 기저들<sup>bases</sup>이 유일하게 정해지는 것이 아니다. 2차원 공간의 모든 점들을 나타내기 위해서는 `(1, 1)`과 `(1, -1)`을 기저로 정할 수도 있고 `(-1, -1)`과 `(1, -1)`을 기저로 정할 수도 있다. 기저를 `u = (23810, -19993)`로 정하고 `v = (-37877, 54712)`로 정하면, 본래 `(1, 1)`이었던 어떤 점은 이제 `4409/25972279 u + 14601/181805953 v` 로 표시해야 할 것이다.
 
@@ -102,7 +102,7 @@ class TypeSystemTest {
 
 좀 더 자세히 살펴 보자. Kotlin에서는 기본적으로 `Set <: Collection <: Iterable`이며 이는 Java와 똑같다. 중요한 건 그 다음인데 `Iterable`에는 `iterator()`가 있고 반환 유형이 `Iterator`이며 여기에는 `next()`, `hasNext()`만 있다. 자, `MutableIterator <: Iterator` 이고 `remove()`는 `MutableIterator`에만 있다. 그렇게 `MutableSet <: MutableCollection <: MutableIterable`이 정의되고, `MutableSet`은 `Set`의 하위 유형이기도 하다. 그렇게 `Set`과 `Collection`에는 값을 바꾸지 않는 `isEmpty()`, `contains()`, `iterator(): Iterator`가 정의되며, `MutableSet`과 `MutableCollection`에만 `add()`, `remove()`, `clear()` 그리고 계승 (override) 정의인 `iterator(): MutableIterator`가 정의된다.
 
-상기한 모든 유형은 모두 정의상 `<out T>`이며 `T`에 대해 공변이다 - 당연히 `Mutable`인 것 전부 빼고. `MutableIterable`, `MutableCollection`, 이하 `MutableSet`를 비롯한 `Mutable`인 Kotlin의 컬렉션은 모두 `T`에 불변이다. 이로써 `Set`의 `T`에 대한 공변성 문제는 일단락되었다. `T <: T'`이면 `Set<T> <: Set<T'>`이다.
+상기한 모든 유형은 모두 정의상 `<out T>`이며 `T`에 대해 공변이다 - 당연히 `Mutable`인 것 전부 빼고. `MutableIterable`, `MutableCollection`, 이하 `MutableSet`를 비롯한 `Mutable`인 Kotlin의 컬렉션은 모두 `T`에 불변이다. 이로써 `Set`의 `T`에 대한 공변/반변 문제는 일단락되었다. `T <: T'`이면 `Set<T> <: Set<T'>`이다.
 
 ## 해결된 줄 알았지?
 
@@ -382,13 +382,13 @@ interface InOutUniqAssoc<K, V> : InUniqAssoc<K, V>, OutUniqAssoc<K, V> {
 }
 ```
 
-기본적으로 `OutUniq`는 `T`에 대해 공변으로 정의되지만 `OutUniq`에 정의된 `contains()`가 `(T) -> Boolean` 유형으로 `T`가 `in` 위치에 있으며 `T`에 대해 반변이다. 따라서 **이것부터 틀려먹었다.** 게다가 `InUniqAssoc`의 `entries`와 `InEntry`, 그리고 `InEntry`와 `value` 간의 공변/반변성을 맞추려면 `InUniqAssoc`을 `V`에 불변으로 정의하는 수밖에 없다. (`V`에 반변으로 만들기 위해 `InUniqAssoc`과 `InEntry`를 만들었는데?) 마지막으로 `InOutUniqAssoc`의 `entries`는 `InOutUniq<InOutEntry<K, V>>` 유형인데 이것은 놀랍게도 `InUniq<InEntry<K, V>>`의 하위 유형이 아니기 때문에 `InUniqAssoc`의 `entries`를 계승하지 않는다. `InOutUniq`가 `T`에 대해 불변이기 때문에!
+기본적으로 `OutUniq`는 `T`에 대해 공변으로 정의되지만 `OutUniq`에 정의된 `contains()`가 `(T) -> Boolean` 유형으로 `T`가 `in` 위치에 있으며 `T`에 대해 반변이다. 따라서 **이것부터 틀려먹었다.** 게다가 `InUniqAssoc`의 `entries`와 `InEntry`, 그리고 `InEntry`와 `value` 간의 공변/반변을 맞추려면 `InUniqAssoc`을 `V`에 불변으로 정의하는 수밖에 없다. (`V`에 반변으로 만들기 위해 `InUniqAssoc`과 `InEntry`를 만들었는데?) 마지막으로 `InOutUniqAssoc`의 `entries`는 `InOutUniq<InOutEntry<K, V>>` 유형인데 이것은 놀랍게도 `InUniq<InEntry<K, V>>`의 하위 유형이 아니기 때문에 `InUniqAssoc`의 `entries`를 계승하지 않는다. `InOutUniq`가 `T`에 대해 불변이기 때문에!
 
 아직 `keys`와 `values`는 정의하지도 않았다. 그것들이 `InUniqAssoc`에서 알맞게 정의되려면 `replace` 같은 듣도 보도 못한 연산 하나만 정의된 `InplaceInUniq`를 정의해야 하고 `InUniq`의 상위 유형이 되어야 한다.
 
 ## 대체 뭐가 진짜 문제인가
 
-`InOutUniq<InOutEntry<K, V>> <: InUniq<InEntry<K, V>>`가 성립하지 못하게 되어 버린 것은 본질적으로 클래스 유형에 공변/반변성을 정의한 데 있다. `InUniq`가 `T`에 반변이므로 추이적으로 `InOutUniq<T> <: InUniq<T> <: InUniq<T'>`가 되기 위해서는 `T' <: T`여야 하는데, 우리는 `InOutEntry <: InEntry`로 정의했다. 그럼 순서를 `InEntry <: InOutEntry`로 옮겨 볼까? 순식간에 `InEntry <: InOutEntry <: OutEntry`가 되어, `OutEntry`의 어떤 하위 유형에서는 `value`를 꺼낼 수 없게 되고, 그게 뭔지는 유형체계를 통해 미리 알 수 없기 때문에, `OutEntry`의 존재 의의가 사라진다.
+`InOutUniq<InOutEntry<K, V>> <: InUniq<InEntry<K, V>>`가 성립하지 못하게 되어 버린 것은 본질적으로 클래스 유형에 공변/반변을 정의한 데 있다. `InUniq`가 `T`에 반변이므로 추이적으로 `InOutUniq<T> <: InUniq<T> <: InUniq<T'>`가 되기 위해서는 `T' <: T`여야 하는데, 우리는 `InOutEntry <: InEntry`로 정의했다. 그럼 순서를 `InEntry <: InOutEntry`로 옮겨 볼까? 순식간에 `InEntry <: InOutEntry <: OutEntry`가 되어, `OutEntry`의 어떤 하위 유형에서는 `value`를 꺼낼 수 없게 되고, 그게 뭔지는 유형체계를 통해 미리 알 수 없기 때문에, `OutEntry`의 존재 의의가 사라진다.
 
 **우리는 흔히 클래스 기반의 객체지향 언어에 대해서 프로토타입 기반의 객체지향 언어보다 강유형<sup>strongly typed</sup>이라고 즐겨 말하고는 한다.** 이는 클래스 기반 언어들이 프로토타입 기반 언어들에 비해 대체로 컴파일 타임에 미리 더 많은 에러 가능성을 유형 오류<sup>type error</sup>로 잡아 주기 때문이다.
 
@@ -398,7 +398,7 @@ interface InOutUniqAssoc<K, V> : InUniqAssoc<K, V>, OutUniqAssoc<K, V> {
 
 오늘날 클래스를 불변값처럼 쓰는 사례가 많아지고 있고, 객체지향 언어에서 현실을 객체로 직접 모델링하는 것을 피하여 공유된 변하는 상태<sup>shared mutable state</sup>를 줄이는 것이 여러 설계 패러다임이나 패턴을 통해 권장되고 있다. 그러나 근본적으로 클래스는 모델링의 도구로 태동하였고 상태를 갖도록 설계되었으며 인터페이스 역시 마찬가지이다. 그래서 그 상태를 바꾸는 연산이 클래스나 인터페이스에 정의되며, 하나의 값을 여러 곳에서 참조하게 되면 당연히 그 상태를 바꾸는 연산에도 제약이 만들어져야 한다. 위의 `In`/`Out` 구분이 그것을 유형 체계에 편입하려는 시도를 단적으로 보여 준다.
 
-그래서 안타깝게도 공변/반변성을 통해 어떤 클래스 유형에 `In`과 `Out`을 동시에 정의하고 동시에 `InOut`이 잘 작동하도록 하는 방법은 없다. `InOut`이 성립하려면 우리가 값을 쓰고 있는 대상과 값을 읽고 있는 대상이 하나라는 제약이 필요하다. 이는 값을 쓰고 읽는 동작이 순서에 의존하게 만들고 이는 상태에 의존하는 것이다. 그러나 공변/반변성을 정확히 정의하기 위해서는 `In` 대상과 `Out` 대상이 하나일 수 없어야 한다. 그러면 우리는 함수에 `In`으로 어떤 값을 넣은 후 `Out`으로 다른 값을 받으면 함수를 통해 새로 만든 정보는 `Out`으로 받은 값에만 포함되어 있고 `In`에 넣은 값에는 섞이지 않았을 것이라고 가정하게 된다. 이것이 함수형 프로그래밍이며 당신이 짜고자 하는 코드가 진정 안전하면서 유형 관점에서도 충분한 일반성(제네릭)을 갖게 하는 가장 확실한 방법이다. 반대로 클래스 기반 객체지향에서 자꾸 유형을 일반화하다 보면 `Entry`에서의 사례와 같이 `In`/`Out` 구분을 할 수 없게 되고 `Uniq`에서의 사례와 같이 유형 인자가 사라지는데 이 과정이 바로 유형 삭제<sup>type erasure</sup>이다. 유형 삭제는 함수형 언어에서는 예외 없이 항상 일어나는 일이다.
+그래서 안타깝게도 공변/반변을 통해 어떤 클래스 유형에 `In`과 `Out`을 동시에 정의하고 동시에 `InOut`이 잘 작동하도록 하는 방법은 없다. `InOut`이 성립하려면 우리가 값을 쓰고 있는 대상과 값을 읽고 있는 대상이 하나라는 제약이 필요하다. 이는 값을 쓰고 읽는 동작이 순서에 의존하게 만들고 이는 상태에 의존하는 것이다. 그러나 공변/반변을 정확히 정의하기 위해서는 `In` 대상과 `Out` 대상이 하나일 수 없어야 한다. 그러면 우리는 함수에 `In`으로 어떤 값을 넣은 후 `Out`으로 다른 값을 받으면 함수를 통해 새로 만든 정보는 `Out`으로 받은 값에만 포함되어 있고 `In`에 넣은 값에는 섞이지 않았을 것이라고 가정하게 된다. 이것이 함수형 프로그래밍이며 당신이 짜고자 하는 코드가 진정 안전하면서 유형 관점에서도 충분한 일반성(제네릭)을 갖게 하는 가장 확실한 방법이다. 반대로 클래스 기반 객체지향에서 자꾸 유형을 일반화하다 보면 `Entry`에서의 사례와 같이 `In`/`Out` 구분을 할 수 없게 되고 `Uniq`에서의 사례와 같이 유형 인자가 사라지는데 이 과정이 바로 유형 삭제<sup>type erasure</sup>이다. 유형 삭제는 함수형 언어에서는 예외 없이 항상 일어나는 일이다.
 
 Kotlin은 함수형 프로그래밍을 포함하는 언어로 만들어졌지만 사실 그 용법은 대체로 전혀 함수형이 아니다. `In`/`Out`을 만들기 시작했던 이유에서 드러나듯 `MutableMap`같은 값 가변 컬렉션이 있으며, `forEach`는 철저히 순서대로 작동하고, 람다식에서도 외부 값들에 마음대로 접근하고 외부 상태를 조작할 수 있다. 결국 Java와 함께 쉽게 쓰이기 위해서 만들어진 것이고, 그래서 기본적으로 항상 상태에 직접 의존하지만 가끔 그렇지 않은 부분을 명시할 수 있도록 한 것이다.
 
