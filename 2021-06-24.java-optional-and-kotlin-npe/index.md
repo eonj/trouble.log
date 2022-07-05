@@ -120,6 +120,8 @@ Kotlin 은 앞으로도 플랫폼 유형을 `T!` 에서 `T?` 로 강제하는 �
 
 Kotlin 1.7 에 definitely non-nullable types 기능이 안정 수준으로 들어옴으로써 `Optional` 을 위한 `getOrDefault` 가 실험 수준에 추가되었다. 반환 유형은 `T & Any` 이다.
 
+오늘의 결론: 뉴스 나오기 전에 생각이 많다면 가끔은 로드맵을 잘 보자. <https://kotlinlang.org/docs/roadmap.html>
+
 ----
 
 \[1\] Oracle. *Java SE 8 API References.* Class HashMap\<K,V\> from package java.util. <https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html>
