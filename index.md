@@ -14,6 +14,7 @@
 
 ## 글 목록
 
+* [2021-06-24.java-optional-and-kotlin-npe](./2021-06-24.java-optional-and-kotlin-npe/)<br />Kotlin 에서 Java Optional 잘 쓰는 방법
 * [2021-06-02.android-project-local-m2-repo](./2021-06-02.android-project-local-m2-repo/)<br />Android 프로젝트 로컬 m2 저장소
 * [2021-05-24.gradle-kotlin-dsl-gradual-migration-android](./2021-05-24.gradle-kotlin-dsl-gradual-migration-android/)<br />Android 프로젝트, Gradle Groovy DSL 에서 Gradle Kotlin DSL 로 점진적 이전하기
 * [2021-05-02.nginx-revproxy-for-confluence](./2021-05-02.nginx-revproxy-for-confluence/)<br />Confluence 용 NGINX 리버스 프록시 구성
