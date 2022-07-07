@@ -4,8 +4,8 @@ Trouble ID `2021-06-24.java-optional-and-kotlin-npe`
 
 f/u:
 
-- `2018-01-10.java-8-problematic-lambda-invokedynamic`<br />Java 버전을 올리고 싶어요 ([🔗](<https://eonj.github.io/trouble.log/2018-01-10.java-8-problematic-lambda-invokedyamic/>))
-- `2020-01-25.moshi-kotlin-android-proguard`<br />Moshi Kotlin & Android ProGuard (R8) ([🔗](<https://eonj.github.io/trouble.log/2020-01-15.moshi-kotlin-android-proguard/>))
+- [`2018-01-10.java-8-problematic-lambda-invokedynamic`](../2018-01-10.java-8-problematic-lambda-invokedyamic/)<br />Java 버전을 올리고 싶어요
+- [`2020-01-25.moshi-kotlin-android-proguard`](../2020-01-15.moshi-kotlin-android-proguard/)<br />Moshi Kotlin & Android ProGuard (R8)
 
 소스 코드에 람다 표현 문법, 바이트코드에 invokedynamic, 함수형 런타임 라이브러리. 그리고 이번에는 런타임 백포팅. Java 8 호환성 문제는 참 질리지도 않나 보다. 오늘은 `Optional` 이다. (이하 `Optional` 은 `java.util.Optional` 을 줄여 쓴 것이다.)
 
@@ -61,8 +61,8 @@ optional.orElseNull()
 
 f/u:
 
-- `2020-06-25.reactivex-conversion-overview`<br />(내가 보려고 만든) ReactiveX 유형 변환 ([🔗](<https://eonj.github.io/trouble.log/2020-06-25.reactivex-conversion-overview/>))
-- `2019-06-21.wow-much-generic-collection`<br />와! 제네릭 컬렉션! ([🔗](<https://eonj.github.io/trouble.log/2019-06-21.wow-much-generic-collection/>))
+- [`2020-06-25.reactivex-conversion-overview`](../2020-06-25.reactivex-conversion-overview/)<br />(내가 보려고 만든) ReactiveX 유형 변환
+- [`2019-06-21.wow-much-generic-collection`](../2019-06-21.wow-much-generic-collection/)<br />와! 제네릭 컬렉션!
 
 ## 배경
 
