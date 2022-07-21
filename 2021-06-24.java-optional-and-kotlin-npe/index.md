@@ -108,6 +108,8 @@ Kotlin 은 함수형 언어를 표방하고 선언부에서 `throws` 를 제거�
 
 Kotlin 은 앞으로도 플랫폼 유형을 `T!` 에서 `T?` 로 강제하는 방법을 공식 툴체인에서 제공할 계획이 없다 \[10\]. 그렇다면 언젠가 적어도 `Optional` 대응이 도입되는 건 필수적인 수순이 아닐까 기대해 본다.
 
+----
+
 (Update @ Jul 2022)
 
 ***What's new in 1.7*** <https://kotlinlang.org/docs/whatsnew17.html>
