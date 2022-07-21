@@ -1,5 +1,7 @@
 삶이 힘들고 친구도 안 보일 때, 물난리를 건너실 다리를 몸소 놓아 드릴게요.
 
+Oh when times get roug, and friends just can't be found; like a bridge over troubled water, I will lay me down.
+
 <iframe
   style="max-width: 100%; height: auto;"
   width="560"
@@ -15,6 +17,7 @@
 ## 글 목록
 
 * [`2022-07-04.typescript-jsonvalue-typedef-no-more`](./2022-07-04.typescript-jsonvalue-typedef-no-more/)<br />TypeScript 에서 JsonValue 유형 정의하지 말기
+* [`2021-12-01.moshi-number-point-zero`](./2021-12-01.moshi-number-point-zero/)<br />Moshi n.0
 * [`2021-06-24.java-optional-and-kotlin-npe`](./2021-06-24.java-optional-and-kotlin-npe/)<br />Kotlin 에서 Java Optional 잘 쓰는 방법
 * [`2021-06-02.android-project-local-m2-repo`](./2021-06-02.android-project-local-m2-repo/)<br />Android 프로젝트 로컬 m2 저장소
 * [`2021-05-24.gradle-kotlin-dsl-gradual-migration-android`](./2021-05-24.gradle-kotlin-dsl-gradual-migration-android/)<br />Android 프로젝트, Gradle Groovy DSL 에서 Gradle Kotlin DSL 로 점진적 이전하기
