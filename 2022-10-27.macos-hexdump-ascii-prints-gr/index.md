@@ -1,6 +1,6 @@
 Trouble ID `2022-10-27.macos-hexdump-ascii-prints-gr`
 
-# macOS 의 hexdump 가 GR 바이트를 그대로 출력하는 현상
+# macOS 의 `hexdump -C` 가 GR 바이트를 그대로 출력하는 현상
 
 > 스포일러: libc 주의, 잘못된 중간 결론 주의.
 
