@@ -50,7 +50,27 @@ f/u:
 
 - [`2020-01-25.moshi-kotlin-android-proguard`](../2020-01-15.moshi-kotlin-android-proguard/)<br />Moshi Kotlin & Android ProGuard (R8)
 
-JaCoCo는 Java 프로젝트에서 시험<sup>test</sup>의 코드 범위<sup>code coverage</sup>를 측정하기 위한 도구이다. 흔히 `jacoco.exec` 으로 언급되는 바이너리 포맷의 파일을 생산하고, 이로부터 HTML 이나 XML 로 된 리포트 파일을 만들어 주기도 한다. 전자는 JUnit 플랫폼과 사용 하는 경우 `java` 의 옵션인 `-javaagent` 로 `jacocoagent.jar` 를 지정해서 동작하고 \[1\], 후자는 단독으로 `java` 에 `-jar` 옵션으로 `jacococli.jar` 를 동작하게 되는데 \[2\], 솔직히 둘 다 웬만하면 직접 다룰 일은 없다. JaCoCo Maven 플러그인이나 JaCoCo Gradle 플러그인을 사용하기 때문이다.
+JaCoCo는 Java 프로젝트에서 시험<sup>test</sup>의 코드 범위<sup>code coverage</sup>를 측정하기 위한 도구이다. 흔히 `jacoco.exec` 으로 언급되는 바이너리 포맷의 파일을 생산하고, 이로부터 HTML 이나 XML 로 된 리포트 파일을 만들어 주기도 한다. 전자는 JUnit 플랫폼과 사용 하는 경우 `java` 의 옵션인 `-javaagent` 로 `jacocoagent.jar` 를 지정해서 동작하고 \[1\], 후자는 단독으로 `java` 에 `-jar` 옵션으로 `jacococli.jar` 를 동작하게 되는데 \[2\], 솔직히 둘 다 웬만하면 직접 다룰 일은 없다. JaCoCo Maven 플러그인이나 JaCoCo Gradle 플러그인을 사용하기 때문이다. 이렇게.
+
+> build.gradle.kts:
+>
+> ```kotlin
+> plugins {
+>     jacoco
+> }
+> ```
+>
+> build.gradle:
+>
+> ```groovy
+> plugins {
+>     id 'jacoco'
+> }
+> ```
+>
+> ---
+>
+> Gradle User Manual (“Gradle Docs,” current version). *The JaCoCo Plugin.* <https://docs.gradle.org/current/userguide/jacoco_plugin.html>
 
 Android 역시 Gradle 프로젝트로 JaCoCo 플러그인을 그대로 그냥&hellip; 적용할 수 있으면 좋겠지만, 그게 될 리가 없지. 이 Android 앱/라이브러리 프로젝트라는 게 처음부터 표준 Java 프로젝트와는 처음부터 적잖이 달랐으니까. 그 모든 기묘한 부분을 Android SDK 의 build-tools 에 있는 빌드 툴체인에 다 몰아 넣어버린 것으로 Eclipse ADT 가 시작되어 AGP 로 이어져 왔다는 역사는 이제 그냥 사실로 받아들일 때가 됐다. AAPT (현행 AAPT2), Dx (현행 D8), apksigner (jarsigner에서 v1으로 출발; 현행 [APK Signature Scheme v4](<https://source.android.com/docs/security/features/apksigning/v4>)), 그리고 앞서 살펴봤던 ProGuard (현행 R8). 여기에 옛날부터 또 다른 중요한 내장 기능이 있었으니 이것이 바로 JaCoCo 이다. 즉 AGP 에 들어 있는 JaCoCo 를 사용하면 된다!
 
