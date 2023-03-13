@@ -10,7 +10,11 @@ AGP (Android Gradle Plugin) 7.3 이 안정 채널로 릴리스 되었다.
 >
 > ----
 >
-> <https://developer.android.com/studio/releases/gradle-plugin?hl=en#7-3-0>
+> ~~<https://developer.android.com/studio/releases/gradle-plugin?hl=en#7-3-0>~~
+>
+> (Update @ May 2023)
+>
+> <https://developer.android.com/studio/past-releases/past-agp-releases/agp-7-3-0-release-notes?hl=en>
 
 오늘의 주인공은 JaCoCo. <https://www.jacoco.org/jacoco/>
 
