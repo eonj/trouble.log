@@ -10,7 +10,7 @@ AGP (Android Gradle Plugin) 7.3 이 안정 채널로 릴리스 되었다.
 >
 > ----
 >
-> https://developer.android.com/studio/releases/gradle-plugin?hl=en#7-3-0
+> <https://developer.android.com/studio/releases/gradle-plugin?hl=en#7-3-0>
 
 오늘의 주인공은 JaCoCo. <https://www.jacoco.org/jacoco/>
 
@@ -102,7 +102,7 @@ Android 역시 Gradle 프로젝트로 JaCoCo 플러그인을 그대로 그냥&he
 >
 > ----
 >
-> https://developer.android.com/studio/past-releases/past-agp-releases/agp-1-3-1-release-notes
+> <https://developer.android.com/studio/past-releases/past-agp-releases/agp-1-3-1-release-notes>
 
 \[4\] Google IssueTracker 195860510: *AGP 7.0.0 does not create unit test jacoco exec files correctly with testCoverageEnabled true.* <https://issuetracker.google.com/issues/195860510>
 
@@ -126,9 +126,9 @@ Android 역시 Gradle 프로젝트로 JaCoCo 플러그인을 그대로 그냥&he
 >
 >*(**emphasis** mine, original emphases/hyperlinks omitted)*
 >
->Android Developers \[lang=en\] &mdash; Documentation: *Build instrumented tests.* <https://developer.android.com/training/testing/instrumented-tests?hl=en>
+> Android Developers \[lang=en\] &mdash; Documentation: *Build instrumented tests.* <https://developer.android.com/training/testing/instrumented-tests?hl=en>
 >
->![Build instrumented tests](image-en-build-instrumented-tests.png)
+> ![Build instrumented tests](image-en-build-instrumented-tests.png)
 
 > The `AndroidJUnitRunner` class is a JUnit test runner that lets you run **instrumented** JUnit 4 tests on Android devices, including those using the Espresso, UI Automator, and Compose testing frameworks.
 >
@@ -164,6 +164,7 @@ Android 역시 Gradle 프로젝트로 JaCoCo 플러그인을 그대로 그냥&he
 > *(**emphasis** mine, original emphases/hyperlinks omitted)*
 >
 > Android Studio \[lang=en\] &mdash; Android Studio: <https://developer.android.com/studio/test/test-in-android-studio?hl=en>
+>
 > ![Test in Android Studio](image-en-test-in-android-studio.png)
 
 > If your project includes build variants with unique source sets, you might want to include **instrumented** tests that correspond to those source sets. This keeps your test code organized and lets you run only the tests that apply to a given build variant.
