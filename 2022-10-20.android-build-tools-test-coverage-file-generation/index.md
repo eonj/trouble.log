@@ -1,6 +1,6 @@
 Trouble ID `2022-10-20.android-build-tools-test-coverage-file-generation`
 
-# Android 빌드 도구의 시험 범위<sup>test coverage</sup> 파일 생성 기능
+# Android 빌드 도구의 시험 망라도<sup>test coverage</sup> 파일 생성 기능
 
 AGP (Android Gradle Plugin) 7.3 이 안정 채널로 릴리스 되었다.
 
@@ -50,7 +50,7 @@ f/u:
 
 - [`2020-01-25.moshi-kotlin-android-proguard`](../2020-01-15.moshi-kotlin-android-proguard/)<br />Moshi Kotlin & Android ProGuard (R8)
 
-JaCoCo는 Java 프로젝트에서 시험<sup>test</sup>의 코드 범위<sup>code coverage</sup>를 측정하기 위한 도구이다. 흔히 `jacoco.exec` 으로 언급되는 바이너리 포맷의 파일을 생산하고, 이로부터 HTML 이나 XML 로 된 리포트 파일을 만들어 주기도 한다. 전자는 JUnit 플랫폼과 사용 하는 경우 `java` 의 옵션인 `-javaagent` 로 `jacocoagent.jar` 를 지정해서 동작하고 \[1\], 후자는 단독으로 `java` 에 `-jar` 옵션으로 `jacococli.jar` 를 동작하게 되는데 \[2\], 솔직히 둘 다 웬만하면 직접 다룰 일은 없다. JaCoCo Maven 플러그인이나 JaCoCo Gradle 플러그인을 사용하기 때문이다. 이렇게.
+JaCoCo는 Java 프로젝트에서 시험<sup>test</sup>의 코드 망라도<sup>code coverage</sup>를 측정하기 위한 도구이다. 흔히 `jacoco.exec` 으로 언급되는 바이너리 포맷의 파일을 생산하고, 이로부터 HTML 이나 XML 로 된 리포트 파일을 만들어 주기도 한다. 전자는 JUnit 플랫폼과 사용 하는 경우 `java` 의 옵션인 `-javaagent` 로 `jacocoagent.jar` 를 지정해서 동작하고 \[1\], 후자는 단독으로 `java` 에 `-jar` 옵션으로 `jacococli.jar` 를 동작하게 되는데 \[2\], 솔직히 둘 다 웬만하면 직접 다룰 일은 없다. JaCoCo Maven 플러그인이나 JaCoCo Gradle 플러그인을 사용하기 때문이다. 이렇게.
 
 > build.gradle.kts:
 >
@@ -74,7 +74,7 @@ JaCoCo는 Java 프로젝트에서 시험<sup>test</sup>의 코드 범위<sup>cod
 
 Android 역시 Gradle 프로젝트로 JaCoCo 플러그인을 그대로 그냥&hellip; 적용할 수 있으면 좋겠지만, 그게 될 리가 없지. 이 Android 앱/라이브러리 프로젝트라는 게 처음부터 표준 Java 프로젝트와는 처음부터 적잖이 달랐으니까. 그 모든 기묘한 부분을 Android SDK 의 build-tools 에 있는 빌드 툴체인에 다 몰아 넣어버린 것으로 Eclipse ADT 가 시작되어 AGP 로 이어져 왔다는 역사는 이제 그냥 사실로 받아들일 때가 됐다. AAPT (현행 AAPT2), Dx (현행 D8), apksigner (jarsigner에서 v1으로 출발; 현행 [APK Signature Scheme v4](<https://source.android.com/docs/security/features/apksigning/v4>)), 그리고 앞서 살펴봤던 ProGuard (현행 R8). 여기에 옛날부터 또 다른 중요한 내장 기능이 있었으니 이것이 바로 JaCoCo 이다. 즉 AGP 에 들어 있는 JaCoCo 를 사용하면 된다!
 
-그런데 이게 관리가 안 된지 정말 오래됐다. 일단 JaCoCo 시험 리포트 파일을 생성할 수 있는 `createDebugCoverageReport` task 는 꾸준히 문제를 일으켰고 (AGP 1.3.1 릴리스 노트에는 이와 관련해 요즘엔 없었던 듯이 조용히 넘어갈 법한 버그 패치 사실이 기재되어 있다 \[3\],) AGP 4.2 부터는 아예 단위 시험<sup>unit test</sup>에 대해서는 `exec` 파일이 생성되지 않는 버그가 생긴 상태였다 \[4\]. 상황이 이렇다 보니 `create[ApplicationVariant]CoverageReport` task 가 계측 시험<sup>instrumented test</sup> \[5\] 범위 파일에만 관여하는 것은 그냥 존속하는 동작이 되어 버렸고, 이전부터 단위 시험에 대해서는 JaCoCo Gradle 플러그인을 이중으로 도입해서 HTML/XML 리포트를 생성한다거나, 심지어는 그냥 외래 JaCoCo 로 직접 단위 시험을 해 버리는 게 흔한 일이 되어 버렸다. 아래 나열한 글들을 보면 그냥 AGP 내장 JaCoCo 에 대해서는 언급조차 없이 외래 JaCoCo 를 사용하는 것이 얼마나 기본 전제가 되어 버렸는지 알 수 있다.
+그런데 이게 관리가 안 된지 정말 오래됐다. 일단 JaCoCo 시험 리포트 파일을 생성할 수 있는 `createDebugCoverageReport` task 는 꾸준히 문제를 일으켰고 (AGP 1.3.1 릴리스 노트에는 이와 관련해 요즘엔 없었던 듯이 조용히 넘어갈 법한 버그 패치 사실이 기재되어 있다 \[3\],) AGP 4.2 부터는 아예 단위 시험<sup>unit test</sup>에 대해서는 `exec` 파일이 생성되지 않는 버그가 생긴 상태였다 \[4\]. 상황이 이렇다 보니 `create[ApplicationVariant]CoverageReport` task 가 계측 시험<sup>instrumented test</sup> \[5\] 망라도 파일에만 관여하는 것은 그냥 존속하는 동작이 되어 버렸고, 이전부터 단위 시험에 대해서는 JaCoCo Gradle 플러그인을 이중으로 도입해서 HTML/XML 리포트를 생성한다거나, 심지어는 그냥 외래 JaCoCo 로 직접 단위 시험을 해 버리는 게 흔한 일이 되어 버렸다. 아래 나열한 글들을 보면 그냥 AGP 내장 JaCoCo 에 대해서는 언급조차 없이 외래 JaCoCo 를 사용하는 것이 얼마나 기본 전제가 되어 버렸는지 알 수 있다.
 
 
 - (2016) <https://medium.com/@rafael_toledo/setting-up-an-unified-coverage-report-in-android-with-jacoco-robolectric-and-espresso-ffe239aaf3fa>
@@ -86,13 +86,13 @@ Android 역시 Gradle 프로젝트로 JaCoCo 플러그인을 그대로 그냥&he
 - (2019) <https://snowdeer.github.io/android/2019/07/04/how-to-use-jacoco-plugin/>
 - (2020) <https://mparchive.tistory.com/183>
 
-감동적이게도 AGP 7.3.0 에 와서야 이 문제가 조금 교정된 것이다. `create[ApplicationVariant]CoverageReport` task 의 기존 동작은 그대로 두고, 계측 시험 범위 파일만 만들던 `isTestCoverageEnabled` 옵션을 제거하여 새 옵션으로 대체하며, `create[ApplicationVariant]UnitTestCoverageReport` task 를 추가한 것. 물론 이 사실은 잘 알려지지 않고 있다. 지금까지 홍보해 왔듯 Android Studio 가 얼마나 IDEA GUI 에 Android 앱/라이브러리 프로젝트의 시험과 범위 리포트 기능을 예쁘게 넣었는지가 그들에게 중요하지 않겠나.
+감동적이게도 AGP 7.3.0 에 와서야 이 문제가 조금 교정된 것이다. `create[ApplicationVariant]CoverageReport` task 의 기존 동작은 그대로 두고, 계측 시험 망라도 파일만 만들던 `isTestCoverageEnabled` 옵션을 제거하여 새 옵션으로 대체하며, `create[ApplicationVariant]UnitTestCoverageReport` task 를 추가한 것. 물론 이 사실은 잘 알려지지 않고 있다. 지금까지 홍보해 왔듯 Android Studio 가 얼마나 IDEA GUI 에 Android 앱/라이브러리 프로젝트의 시험과 망라도 리포트 기능을 예쁘게 넣었는지가 그들에게 중요하지 않겠나.
 
 자 그럼 이제 JaCoCo Gradle 플러그인은 제거하면 되나? 아직 조금 애매한 문제로 보일 수 있다. 적어도 단위 시험의 바이너리 `exec` 파일 생성과 HTML/XML 파일 생성은 정상화됐다. 그런데 항상 HTML 파일과 XML 파일을 동시에 생성하기 때문에, 만약 CSV 파일을 쓰고 있었다면, 혹은 HTML 파일을 만드는 시간을 아끼고 싶다면 `jacocoTestReport` task 를 완전히 대체할 수는 없다. 그리고 `jacocoTestCoverageVerification` task 의 기능은 AGP 에 없다. 이쪽은 본래 C0 이나 C1 같은 값이 균질하게 기준을 넘지 않으면 실패 처리되는 Gradle task 이다.
 
-그런데 아마 웬만한 Android 앱/라이브러리 프로젝트에서는 불필요한 내용이 될 것 같다. Kotlin 을 사용하고 있을 테니 말이다. JaCoCo HTML 리포트 파일을 열어 보면 Kotlin 코드의 val, var 속성이 전부 JVM 클래스파일로 컴파일되어 Java 이름으로 바뀌어 있는 것을 알 수 있고, 이런 부분은 Kotlin 컴파일러가 생성하여 언어가 기본동작을 보장하는 범위인데도 시험 대상에 산입되어, val 속성의 획득자 `get()` 을 굳이 시험하지 않는다면 전부 시험 범위 지표를 깎아먹게 된다. 즉 `jacocoTestCoverageVerification` task 의 부재는 무의미하다.
+그런데 아마 웬만한 Android 앱/라이브러리 프로젝트에서는 불필요한 내용이 될 것 같다. Kotlin 을 사용하고 있을 테니 말이다. JaCoCo HTML 리포트 파일을 열어 보면 Kotlin 코드의 val, var 속성이 전부 JVM 클래스파일로 컴파일되어 Java 이름으로 바뀌어 있는 것을 알 수 있고, 이런 부분은 Kotlin 컴파일러가 생성하여 언어가 기본동작을 보장하는 망라도인데도 시험 대상에 산입되어, val 속성의 획득자 `get()` 을 굳이 시험하지 않는다면 전부 시험 망라도 지표를 깎아먹게 된다. 즉 `jacocoTestCoverageVerification` task 의 부재는 무의미하다.
 
-아마 AGP 프로젝트에서 대단한 것을 해 주지 않는다면 이 부분에 대해서는 앞으로 SonarQube 를 이용하는 것이 상식이 될 것이다. SonarQube 는 시험 범위 결과 파일과 함께 Kotlin 소스 코드를 읽어서 Kotlin 언어 의미론에 맞게 시험 범위 지표를 계산해 준다. 최신 범위의 SonarQube 는 바이너리 포맷인 `exec` 파일을 지원하지 않고 XML 파일을 요구하는데, 이 부분에 대해서 굳이 HTML 파일을 생성하지 않고 시간을 절약한다면 `jacococli.jar` 를 이용할 수 있다. `jacocoTestReport` task 역시 굳이 남겨두지 않는 것을 추천한다. 상황이 이전보다는 희망적이고 JaCoCo 가 한 프로젝트의 빌드스크립트 클래스패스에 두 벌 있는 것은 별로 좋을 게 없다.
+아마 AGP 프로젝트에서 대단한 것을 해 주지 않는다면 이 부분에 대해서는 앞으로 SonarQube 를 이용하는 것이 상식이 될 것이다. SonarQube 는 시험 망라도 결과 파일과 함께 Kotlin 소스 코드를 읽어서 Kotlin 언어 의미론에 맞게 시험 망라도 지표를 계산해 준다. SonarQube 는 7.9 이래로 최신 버전에서 바이너리 포맷인 `exec` 파일을 지원하지 않고 XML 파일을 요구하는데, 이 부분에 대해서 굳이 HTML 파일을 생성하지 않고 시간을 절약한다면 `jacococli.jar` 를 이용할 수 있다. `jacocoTestReport` task 역시 굳이 남겨두지 않는 것을 추천한다. 상황이 이전보다는 희망적이고 JaCoCo 가 한 프로젝트의 빌드스크립트 클래스패스에 두 벌 있는 것은 별로 좋을 게 없다.
 
 ---
 
