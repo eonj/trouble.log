@@ -17,7 +17,7 @@ Oh when times get roug, and friends just can't be found; like a bridge over trou
 ## 글 목록
 
 * [`2022-10-27.macos-hexdump-ascii-prints-gr`](./2022-10-27.macos-hexdump-ascii-prints-gr/)<br />macOS 의 `hexdump -C` 가 GR 바이트를 그대로 출력하는 현상
-* [`2022-10-20.android-build-tools-test-coverage-file-generation`](./2022-10-20.android-build-tools-test-coverage-file-generation/)<br />Android 빌드 도구의 시험 범위<sup>test coverage</sup> 파일 생성 기능
+* [`2022-10-20.android-build-tools-test-coverage-file-generation`](./2022-10-20.android-build-tools-test-coverage-file-generation/)<br />Android 빌드 도구의 시험 망라도<sup>test coverage</sup> 파일 생성 기능
 * [`2022-07-04.typescript-jsonvalue-typedef-no-more`](./2022-07-04.typescript-jsonvalue-typedef-no-more/)<br />TypeScript 에서 JsonValue 유형 정의하지 말기
 * [`2021-12-01.moshi-number-point-zero`](./2021-12-01.moshi-number-point-zero/)<br />Moshi n.0
 * [`2021-06-24.java-optional-and-kotlin-npe`](./2021-06-24.java-optional-and-kotlin-npe/)<br />Kotlin 에서 Java Optional 잘 쓰는 방법
