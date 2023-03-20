@@ -92,7 +92,12 @@ Android 역시 Gradle 프로젝트로 JaCoCo 플러그인을 그대로 그냥&he
 
 그런데 아마 웬만한 Android 앱/라이브러리 프로젝트에서는 불필요한 내용이 될 것 같다. Kotlin 을 사용하고 있을 테니 말이다. JaCoCo HTML 리포트 파일을 열어 보면 Kotlin 코드의 val, var 속성이 전부 JVM 클래스파일로 컴파일되어 Java 이름으로 바뀌어 있는 것을 알 수 있고, 이런 부분은 Kotlin 컴파일러가 생성하여 언어가 기본동작을 보장하는 망라도인데도 시험 대상에 산입되어, val 속성의 획득자 `get()` 을 굳이 시험하지 않는다면 전부 시험 망라도 지표를 깎아먹게 된다. 즉 `jacocoTestCoverageVerification` task 의 부재는 무의미하다.
 
-아마 AGP 프로젝트에서 대단한 것을 해 주지 않는다면 이 부분에 대해서는 앞으로 SonarQube 를 이용하는 것이 상식이 될 것이다. SonarQube 는 시험 망라도 결과 파일과 함께 Kotlin 소스 코드를 읽어서 Kotlin 언어 의미론에 맞게 시험 망라도 지표를 계산해 준다. SonarQube 는 7.9 이래로 최신 버전에서 바이너리 포맷인 `exec` 파일을 지원하지 않고 XML 파일을 요구하는데, 이 부분에 대해서 굳이 HTML 파일을 생성하지 않고 시간을 절약한다면 `jacococli.jar` 를 이용할 수 있다. `jacocoTestReport` task 역시 굳이 남겨두지 않는 것을 추천한다. 상황이 이전보다는 희망적이고 JaCoCo 가 한 프로젝트의 빌드스크립트 클래스패스에 두 벌 있는 것은 별로 좋을 게 없다.
+아마 AGP 프로젝트에서 대단한 것을 해 주지 않는다면 이 부분에 대해서는 앞으로 SonarQube 를 이용하는 것이 상식이 될 것이다. SonarQube 는 시험 망라도 결과 파일과 함께 Kotlin 소스 코드를 읽어서 Kotlin 언어 의미론에 맞게 시험 망라도 지표를 계산해 준다. SonarQube 는 7.9 이래로 최신 버전에서 바이너리 포맷인 `exec` 파일을 지원하지 않고 XML 파일을 요구하는데, 이 부분에 대해서 굳이 HTML 파일을 생성하지 않고 시간을 절약한다면 `jacococli.jar` 를 이용할 수 있다. `jacocoTestReport` task 역시 굳이 남겨두지 않는 것을 추천한다. 상황이 이전보다는 희망적이고 JaCoCo 가 한 프로젝트의 빌드스크립트 클래스패스에 두 벌 있는 것은 별로 좋을 게 없다. 끝.
+
+tl;dr:
+
+- AGP 7.3 이상으로 올리고 `plugins { jacoco }` 제거
+- SonarQube 사용은 Kotlin 소스 코드 구조에 알맞은 망라도<sup>coverage</sup> 측정에 필수
 
 ---
 
