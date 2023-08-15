@@ -86,7 +86,7 @@ Kotlin 이나 Optional 이나, 툴체인과 IDE 의 도움을 받아 NPE 를 피
 
 ## 바라는 것
 
-나는 Kotlin 표준 라이브러리에서 `Optional` 을 포함하지 않는 것은 그럭저럭 납득할 만한 기술결정이라고 생각한다. 그러나 `Optional` 을 쓰는 이 세상 코드 전체를 비토할 게 아니라면 적어도 `Optional` 에 대해 툴체인이 나쁘지 않은 지원을 제공해야 한다고 생각한다. `java.util` 에 있는 `Map` 이나 `List` 를 사용하기에는 mutability 통제가 되는 등 Kotlin 이 오히려 좋은 선택이 되는데, 같은 패키지에 있는 `Optional` 을 사용하는 순간 Kotlin 의 null 안전성이라는 장점이 오히려 마비된다? 이건 납득하기 어렵다.
+나는 Kotlin 표준 라이브러리에서 `Optional` 을 포함하지 않는 것은 그럭저럭 납득할 만한 기술결정이라고 생각한다. 그러나 `Optional` 을 쓰는 이 세상 코드 전체를 비토할 게 아니라면 적어도 `Optional` 에 대해 툴체인이 나쁘지 않은 지원을 제공해야 한다고 생각한다. `java.util` 에 있는 `Map` 이나 `List` 를 사용하기에는 mutability 통제가 되는 등 Kotlin 이 오히려 좋은 선택이 되는데, 같은 패키지에 있는 `Optional` 을 사용하는 순간 Kotlin 의 **null 안전성<sup>- safety</sup>**이라는 장점이 오히려 마비된다? 이건 납득하기 어렵다.
 
 이 부분에 있어 가능한 대안을 하나 제안해 보자면, 아예 모든 `Optional<T : Any>` 에서 `T?` 로 자동 언박싱<sup>unboxing</sup>을 제공하는 기능이 추가될 수 있을 것이다. 허황된 이야기는 아닌 게, 예를 들어 툴체인은 기존 JSR-305 `@Nullable`/`@Nonnull` 을 포함해 알려진 모든 nullability 관련 annotation 을 인식하며 이 리스트는 계속 업데이트되고 있다 \[4\]\[5\]. 또한 Kotlin 의 박스드<sup>boxed</sup> 유형인 `Int` 는 표준 라이브러리에만 존재할 뿐 빌드 결과물에서는 플랫폼의 원시 유형<sup>primitive type</sup>으로 번역된다 \[6\]. Kotlin 외부 API 대상에 대해 nullability 관련하여 호환성을 적극적으로 맞춘 사례가 있으며, 언박싱 역시 사례가 있는 것이다. 아니면, 적어도 JVM 의 경우에 한정해서 `Optional` 의 메서드<sup>method</sup> 반환 유형이 `T : Any` 일지 `T?` 일지를 조금 더 명확하게 계산해 줄 수도 있을 것이다. 이 부분은 유형 추론<sup>type inference</sup>의 영역인데, 순방향<sup>forward flow</sup>으로 진행될 것이므로 `Optional` 메서드에 대한 추론 규칙을 추가하면 못 할 것도 없다.
 
@@ -125,6 +125,47 @@ Kotlin 은 앞으로도 플랫폼 유형을 `T!` 에서 `T?` 로 강제하는 �
 Kotlin 1.7 에 definitely non-nullable types 기능이 안정 수준으로 들어옴으로써 `Optional` 을 위한 `getOrDefault` 가 실험 수준에 추가되었다. 반환 유형은 `T & Any` 이다.
 
 오늘의 결론: 뉴스 나오기 전에 생각이 많다면 가끔은 로드맵을 잘 보자. <https://kotlinlang.org/docs/roadmap.html>
+
+----
+
+(Update @ Jun 2023)
+
+글이 좀 길고 주절주절 잡설이 많은데 문제의 핵심 실체가 뭐였는지 명확하지 않았고 언어 업데이트가 그걸 어떻게 풀게 해 주는지도 좀 대충 넘긴 것 같다. 지인의 피드백을 받아 아예 이 글의 네 번째 업데이트로써 나머지 전체를 간추린 버전을 다시 작성해 본다.
+
+Kotlin `MutableMap` 의 제네릭 유형 변수가 해소된 `MutableMap<String, String>` 유형이 있다. 이 유형의 값을 `m` 이라 하자. 이것의 유형을 `MutableMap<String?, String?>` 으로 정했다면 `operator fun put` 은 안전했겠지만 `operator fun get ` 을 한 결과는 쓸데없이 `null` 을 제거하는 코드가 범람했을 것이다. Kotlin 유형 체계에서는 `null` 값이 `operator fun put` 으로 들어올 수 없도록 하는 것이 보다 편리하고, 다른 부분에서 `m` 값에 대해 `operator fun get` 을 사용하는 코드를 작성하는 동료들과의 협업에서 코딩 습관 문제에서 안전함을 추구하는 방법일 수 있다. 그래서 `m` 의 유형은 `MutableMap<String, String>` 으로 정한다. 여기까진 문제가 없다.
+
+이제 외래 값 `a`, `b` 가 있다. `a` 는 여러 값들을 조합해 얻어 낸 Kotlin `Optional<String>` (Java `Optional`) 값이고 `b` 는 `a` 가 비어 있을 때에 쓰여야 하는 Kotlin `String?` 값이다. 이때 아래 코드는 정상 컴파일된다.
+
+```kotlin
+m["k"] = a.orElse(b)
+```
+
+사람 생각으로는 `a.orElse(b)` 의 유형은 `String?` 이다. 그러나 이걸 추론하는 규칙은 Kotlin 에 없다! Java `Optional<T>#orElse(T)` 의 반환 유형은 Java `T` 이고 Kotlin 컴파일러는 이를 플랫폼 유형 `T!` 으로 일괄 번역하기 때문이다. Kotlin 컴파일러는 이 부분에 `String!` 값을 `String` 으로 대입할 때 `null` 인 경우 소스 코드를 인용해 NPE 를 던지는 코드를 자동으로 삽입한다. 나는 테스팅 끝난 앱을 프로덕션에 내보내고 나서 외래 값의 변화로 어느날 갑자기 앱 크래시가 급증하는 것을 지켜봐야 했다.
+
+Kotlin 1.8 에 안정 수준으로 들어온 Kotlin/JVM 의 `Optional` 확장함수 `getOrNull` 을 사용하면 위 코드는 다음과 같이 고쳐 쓸 수 있고, 아래 코드는 컴파일되지 않을 것이다.
+
+```kotlin
+m["k"] = a.getOrNull() ?: b
+```
+
+그러면 컴파일 오류를 보고 코드를 이렇게 바꾸어 쓸 수 있다.
+
+```kotlin
+val c = a.getOrNull() ?: b
+if (c != null) {
+    m["k"] = c
+}
+```
+
+Kotlin 에서 null 안전성이 담보되는 방식은 이중적이다. Kotlin 소스 코드에 한정하면 `T?` 값은 절대 그냥 `T` 에 대입될 수 없고, 안전 접근 연산자 `?.` 를 사용하든 엘비스 연산자 `?:` 를 사용하든, NPE 를 던져 버리는 not-null 단정<sup>assertion</sup> 연산자 `!!` 를 사용하지 않도록 사람들을 유도할 수 있다. 그러나 Java 상호운용성<sup>interoperability</sup>을 지극히 강조하면서 퍼지고 있는 Kotlin/JVM 을 보자. Kotlin 소스 코드가 없는 플랫폼 유형 `T!` 에 대해서는 NPE 를 내는 것이 기본 동작이다. 이를 피하는 건 순전히 &lsquo;뇌지컬&rsquo;에 기대야 하는 일이며, 본문에 썼듯 `T!` 를 `T?` 로 보는 선택지는 없다.
+
+Kotlin 내에서는 null 안전성을 강조하고, Java 라이브러리를 사용할 때에는 Java 코드에서 그랬듯 &lsquo;뇌지컬&rsquo;로 조심하지 않으면 null 안전성을 절대 얻을 수 없고. 게다가 `Optional` 을 포함하지 않기에 (지금도 Kotlin/JVM 에서 Java `Optional` 을 지원한 것 외에 Kotlin 의 `Optional` 은 없다), 하나만 있거나 비어 있을 수 있는 값을 컬렉션 연산에서 반복가능<sup>iterable</sup>하게 다룰 수도 없게 되고. 이 모든 기묘함은 Kotlin 언어 설계자들이 무능해서 세부사항을 빠뜨린 것이 아니라 오히려 어떤 원칙을 아주 일관적으로 따른 결과라는 사실을 생각해 보면 알 수 있다.
+
+함수형 언어의 장점에 대한 권위를 Kotlin 이 충분히 가진 것처럼 끌어다 써서 좋아 보이게 하되, 그 중 어려운 부분을 만날 법한 실체를 빠뜨림으로써, 기존에 Java 를 사용하며 함수형 언어를 두려워하고 기피하던 일반 이용자들이 새로운 어법을 굳이 몰라도 되게 하여 당장 써 보기에도 지극히 편하게 하는 것.
+
+우린 이것의 악의적인<sup>malicious</sup> 버전을 기만<sup>deception</sup> 내지는 우민화<sup>keeping people ignorant</sup>라고 부르기로 했다. IntelliJ IDEA 플랫폼의 기술 수준에 비하면 이 부분의 세부사항은 처참해 보이고, Kotlin 은 IDE 의 부속품에 불과한가 하는 생각에 짜증도 난다. 음, 물론 Java 만 열심히 쓰던 사람들의 경험과 마음이 지난 수 년 간 기존보다는 훨씬 함수형으로 작성된 코드들과 가까워지게 되었다는 결과는 무시할 수 없다. 그래서 나는 JetBrains 의 Kotlin 언어 개발자들이 충분히 선의<sup>good intention</sup>를 갖고 있다고 생각하며, 그들이 선의를 갖고 그에 기반해 행동하도록 앞으로도 응원해 주고 싶다. 하지만 그와 별개로 현실적인 타협선에서만 일하는 것은, 그게 특히 기술과 지식의 산물에 반지성주의가 섞인 아주 시장 친화적인 상품이라면, 기술을 아는 사람으로서 답답함을 느끼게 마련이다. 이런 현상은 웹사이트이나 모바일 앱뿐만 아니라 프로그래밍 언어라는 동종업계 기술자에게 팔리는 제품에서도 반복되는 편이다.
+
+`Optional<T>#orElse(T)` 로 NPE 를 내는 컴파일 가능한 테스트 코드로 시작해서 Kotlin 에 대해 불만인 사실을 더 많이 구체적으로 늘어놓고 레퍼런스까지 달아 놓은 글을 보고 싶다면 이제 이 글을 처음부터 보면 된다.
 
 ----
 
