@@ -1,4 +1,4 @@
-Trouble ID `2023-09-06.kotlin19-retrofit2x-callback-nullablility`
+Trouble ID `2023-09-06.kotlin19-retrofit2x-callback-nullability`
 
 # Retrofit 2.x Callback 구현과 Kotlin 1.9 nullability 처리 변경
 
