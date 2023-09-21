@@ -1,6 +1,6 @@
 삶이 힘들고 친구도 안 보일 때, 물난리를 건너실 다리를 몸소 놓아 드릴게요.
 
-Oh when times get roug, and friends just can't be found; like a bridge over troubled water, I will lay me down.
+Oh when times get rough, and friends just can't be found; like a bridge over troubled water, I will lay me down.
 
 <iframe
   style="max-width: 100%; height: auto;"
