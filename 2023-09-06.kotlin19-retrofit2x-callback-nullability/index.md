@@ -73,7 +73,7 @@ invokevirtual com/example/Super.foo:([Ljava/lang/String;)V
 
 이때 피연산자 스택<sup>operand stack</sup>에서 두 개의 참조<sup>reference</sup> 값을 사용하고, 처음 뽑은 값이 리시버<sup>receiver</sup>가 된다 (두번째 뽑은 값은 `String[]` 유형의 인자일 것이다). 이때 해야 할 일은 리시버의 유형이 소스코드에서 추정한 대로 `com.example.Super` 의 하위 유형이 맞는지&hellip; 리시버로부터 상위 클래스로 따라가며 점검하고, 어떤 클래스에서 `void foo(String[] a)` 라는 구현을 (`Super` 자신이 아닌 하위 유형이고 `Super.foo` 가 `abstract` 가 아니라면, `Super.foo` 를 기각하는 구현을) 만나면 비로소 그것을 실행하는 것이다. (상위 인터페이스의 기본<sup>default</sup> 구현 이야기 따위는 싹 생략했다.) 자, 여기에 추가되는 요구사항으로, 이제 만약 `invokevirtual` 연산에서 받은 메서드 설명자<sup>descriptor</sup>의 인자 유형이 실제로 실행해야 할 메서드 구현의 인자 유형에 비해 좁아도 된다고 (그리고 반환 유형은 &mdash; 넓어도 된다고) 가정해 보자. 그럼 이제 JVM 은 리시버의 유형으로부터 상위 유형으로 이동하며 `foo` 라는 이름을 가진 모든 메서드에 대해 인자 유형의 (그리고 반환 유형의) 상속 관계를 (또는, 그 내지는 동등함을) 점검해야 하게 된다. 아 끔찍해라;;;
 
-음, 사실 이게 이젠 이미 `invokedynamic` 을 만났을 때 JVM 이 항상 하고 있는 일이고, `invoke` 에 비해서 좀 효율적인 `invokeExact` 를 만들어 둔 이유이기도 하다. 구체적으로 알고 싶으면, Java SE 7 과 Java SE 8 의 Chapter 6 를 대조해 읽어 보면 된다는 사실 정도는; 굳이 언급하지 않아도 되리라고 생각한다만; 한번 남겨 둔다.
+음, 사실 이게 이젠 이미 `invokedynamic` 을 만났을 때 JVM 이 항상 하고 있는 일이고, `invoke` 에 비해서 좀 효율적인 `invokeExact` 를 만들어 둔 이유이기도 하다. 구체적으로 알고 싶으면, Java SE 7 과 Java SE 8 의 JVM Spec Chapter 6 를 대조해 읽어 보면 된다는 사실 정도는; 굳이 언급하지 않아도 되리라고 생각한다만; 한번 남겨 둔다.
 
 - <https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html>
 - <https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html>
