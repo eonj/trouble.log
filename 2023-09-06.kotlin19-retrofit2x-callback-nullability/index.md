@@ -172,7 +172,7 @@ class Bar : Foo {
 
 우와 도대체 이게 무슨 말이야; 그러니까 &ldquo;No error&rdquo; 라고 되어 있는 소스 코드가 사실은 잘못된 것이고 &ldquo;TYPE\_MISMATCH error&rdquo; 라고 되어 있는 코드가 컴파일러가 정상 동작하는 경우인데, 이슈에서 설명하기로는 이를 &ldquo;저 코드가 성공적으로 컴파일되는<sup>that code is compiled successfully</sup>&rdquo; 전자의 경우가 있고, 후자의 경우를 아울러 보면 &ldquo;일관성을 잃는 동작을 하며<sup>the behavior is not consistent with</sup>&rdquo; 요컨대, 이 경우들이 &ldquo;일관성 있게 동작해야 하는데<sup>should obviously work consistently</sup>&rdquo; 그 이유를 `getOrPutString` 을 `getOrPut` 으로 안전하고 건전하게 대체할 법하지만 `getOrPut` 의 정의는 그렇지 않기 때문이란다. 뭐???
 
-나는 아무 대책 없이 IDEA 를 통해 이 이슈를 제일 먼저 만났고, 물론 `?` 를 없애고 경고가 사라지는 걸 보고 납득하면 될 일이었지만, 오류에 비해 경고는 착오 신호<sup>false signal</sup>일 수 있다는 점에서 원인을 알아보고자 했으나&hellip; &ldquo;이것도 처리 안 해 줄 거면 저것도 하지 마라&rdquo; 식의 논리로 쓰인 글을 만나서 수 개월을 허비하고 만다. 진짜 끝.
+나는 아무 대책 없이 IDEA 를 통해 이 이슈를 제일 먼저 만났고, 물론 `?` 를 없애고 경고가 사라지는 걸 보고 납득하면 될 일이었지만, 오류에 비해 경고는 착오 신호<sup>false signal</sup>일 수 있다는 점에서 원인을 알아보고자 했으나&hellip; &ldquo;이것도 처리 안 해 줄 거면 저것도 하지 마라&rdquo; 식의 어감으로 논리가 궤변 비슷하게 쓰인 글을 만나서 수 개월을 허비하고 만다. 진짜 끝.
 
 결론: 없다.
 
