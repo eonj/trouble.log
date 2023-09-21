@@ -18,6 +18,7 @@ Oh when times get rough, and friends just can't be found; like a bridge over tro
 
 * [`2023-10-07.usb-pps-to-barrel-jack-smps`](./2023-10-07.usb-pps-to-barrel-jack-smps/)<br />USB-C PPS 를 배럴<sup>barrel</sup> SMPS 로 사용하기
 * [`2023-09-06.kotlin19-retrofit2x-callback-nullability`](./2023-09-06.kotlin19-retrofit2x-callback-nullability/)<br />Retrofit 2.x Callback 구현과 Kotlin 1.9 nullability 처리 변경
+* [`2023-02-23.ktlint-why-disabling-filename-and-enum-entry-name-case`](./2023-02-23.ktlint-why-disabling-filename-and-enum-entry-name-case/)<br />ktlint 에서 “File name” 과 “Enum entry” 항목을 불능 처리하게 된 이유
 * [`2022-10-27.macos-hexdump-ascii-prints-gr`](./2022-10-27.macos-hexdump-ascii-prints-gr/)<br />macOS 의 `hexdump -C` 가 GR 바이트를 그대로 출력하는 현상
 * [`2022-10-20.android-build-tools-test-coverage-file-generation`](./2022-10-20.android-build-tools-test-coverage-file-generation/)<br />Android 빌드 도구의 시험 망라도<sup>test coverage</sup> 파일 생성 기능
 * [`2022-07-04.typescript-jsonvalue-typedef-no-more`](./2022-07-04.typescript-jsonvalue-typedef-no-more/)<br />TypeScript 에서 JsonValue 유형 정의하지 말기
