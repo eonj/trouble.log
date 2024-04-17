@@ -16,6 +16,7 @@ Oh when times get rough, and friends just can't be found; like a bridge over tro
 
 ## 글 목록
 
+* [`2024-04-16.android-manifest-tools-replace-conflict`](./2024-04-16.android-manifest-tools-replace-conflict/)<br />Android manifest `tools:replace` 충돌
 * [`2023-10-07.usb-pps-to-barrel-jack-smps`](./2023-10-07.usb-pps-to-barrel-jack-smps/)<br />USB-C PPS 를 배럴<sup>barrel</sup> SMPS 로 사용하기
 * [`2023-09-06.kotlin19-retrofit2x-callback-nullability`](./2023-09-06.kotlin19-retrofit2x-callback-nullability/)<br />Retrofit 2.x Callback 구현과 Kotlin 1.9 nullability 처리 변경
 * [`2022-10-27.macos-hexdump-ascii-prints-gr`](./2022-10-27.macos-hexdump-ascii-prints-gr/)<br />macOS 의 `hexdump -C` 가 GR 바이트를 그대로 출력하는 현상
