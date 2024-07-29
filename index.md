@@ -1,6 +1,8 @@
-삶이 힘들고 친구도 안 보일 때, 물난리를 건너실 다리를 몸소 놓아 드릴게요.
+난리록(亂離錄). 프로그래밍 관련 작은 것들 like TIL.
 
-Oh when times get rough, and friends just can't be found; like a bridge over troubled water, I will lay me down.
+> 삶이 힘들고 친구도 안 보일 때, 물난리를 건너실 다리를 몸소 놓아 드릴게요.
+>
+> when times get rough, and friends just can't be found; like a bridge over troubled water, I will lay me down.
 
 <iframe
   style="max-width: 100%; height: auto;"
@@ -12,7 +14,7 @@ Oh when times get rough, and friends just can't be found; like a bridge over tro
   allowfullscreen>
 </iframe>
 
-난리록(亂離錄). 그냥 두서없이 오늘 한 일 정리. 프로그래밍 관련 작은 것들 like TIL. 알파벳에서는 S가 T를 앞서 나오지만 인생은 trouble에 따르는 troubleshooting의 연속이라서.
+그냥 두서없이 오늘 한 일 정리.  알파벳에서는 S 가 T 를 앞서 나오지만 우리 삶은 trouble 에 따르는 troubleshooting 의 연속이라서.
 
 ## 글 목록
 
