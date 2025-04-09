@@ -249,12 +249,14 @@ User-Agent 가 정말 출발하기 좋다. 대체로 token 정도는 쓰고, Acc
 > weak       = %s"W/"
 > opaque-tag = DQUOTE *etagc DQUOTE
 > etagc      = %x21 / %x23-7E / obs-text
->            ; VCHAR except double quotes, plus obs-text
+>         ; VCHAR except double quotes, plus obs-text
 > ```
 >
-> **Note:** Previously, opaque-tag was defined to be a quoted-string (\[<u>RFC2616</u>\], <u>Section 3.11</u>); thus, some recipients might perform backslash unescaping. Servers therefore ought to avoid backslash characters in entity tags.
+> **Note:** Previously, opaque-tag was defined to be a quoted-string (\[<u>RFC2616</u>\], <u>Section 3.11</u>); thus, some recipients might perform backslash unescaping. *Servers therefore ought to avoid backslash characters in entity tags.*
+>
+> (&hellip; omitted below; *emphasis* mine, <u>hyperlinks</u> removed.)
 
-가장 제약이 적다. VCHAR 중에는 쓸 수 있는 게 가장 많다. 큰따옴표로 묶어야 하고, 큰따옴표만 없으면 된다 (공백이나 탭은 안된다). 다만 리버스 솔리더스는 웬만하면 피하면 좋은데, 어떤 구현체는 이를 다음 옥텟과 함께 quoted-pair 로 해석할 수 있기 때문이다. 다만 본문은 이에 대해 &ldquo;ought to&rdquo; 를 소문자로 사용함으로써 비규범적 문장으로 만들어 이에 대해 규정하기를 회피하고 있다. 이는 어딘가에 있는 또 다른 구현체가 리버스 솔리더스를 quoted-pair 가 아닌 한 글자로 써서 entity-tag 에 넣는 사례가 있고, 심지어 너무 많아서 표준 규칙의 호환성을 희생해서라도 이쪽을 존중해 주는 방향으로 표준 규격서가 대응했음을 시사한다.
+가장 제약이 적다. VCHAR 중에는 쓸 수 있는 게 가장 많다. 큰따옴표로 묶어야 하고, 큰따옴표만 없으면 된다 (공백이나 탭은 안된다). 다만 리버스 솔리더스는 웬만하면 피하면 좋은데, 어떤 구현체는 이를 다음 옥텟과 함께 quoted-pair 로 해석할 수 있기 때문이다. 다만 본문은 이 지점에서 &ldquo;ought to&rdquo; 를 소문자로 사용함으로써 비규범적 문장으로 만들어 이에 대해 규정하기를 회피하고 있다. 이는 어딘가에 있는 또 다른 구현체가 리버스 솔리더스를 quoted-pair 가 아닌 한 글자로 써서 entity-tag 에 넣는 사례가 있고, 심지어 너무 많아서 표준 규칙의 호환성을 희생해서라도 이쪽을 존중해 주는 방향으로 표준 규격서가 대응했음을 시사한다.
 
 표준에서 정한 바는 없으나, opaque-tag 의 이상적인 값에 대한 ABNF 문법은 `DQUOTE *( DIGIT / ALPHA ) DQUOTE` 라고 보면 된다. 아니면 명확한 통제 범위 내에서 bencode 처럼 특수문자 몇 가지만 들어간다든가. d5:hello10:globeworld4:list8:integral3:map6:stringe 뭐 이런 거 있잖은가.
 
@@ -262,6 +264,6 @@ User-Agent 가 정말 출발하기 좋다. 대체로 token 정도는 쓰고, Acc
 
 위에서 살펴본 부분들은 사실 파서를 짜지 않는 이상 볼 일 없는 디테일이다. 빌더를 제공하는 라이브러리가 넘쳐나는데 MDN 문서도 아니고 누가 굳이 IETF RFC 원문에서 ABNF 를 보겠냐고. 그런데 가끔은 이런 값이 문제를 일으키고, 그래서 그 전후에 이런 부분에 관해 논할 일이 생긴다.
 
-정형화된 언어에서, 구문론은 아주 고도화된 규칙으로 정확성을 보장하고 자유도를 남기며, 의미론은 그 위에서 우아하게 자유로운 표현의 가능성을 구사한다. 그러나 그 연결<sup>binding</sup>은 종종, 지극히 단순한 형상을 이리저리 나열해 유래를 알 수 없는 변주를 반복할 뿐인 지루한 모양이 된다. 그러나 참고로 이런 형상들은 물질로 치자면 확산되는 것과 비슷한 경향이 있기 때문에, 서로 간섭하지 않도록 하려면 수학적인 분석이 필요하고, 이는 다분히 언어철학적이며 전혀 낭만적이지 않다. 기껏해야 앞서 언급한 통합된 시스템의 일관성에 대한 심미안 같은 게 좀 필요할 뿐이다. 근데 그게 없이 느낌적인 느낌만으로 알아서 시스템이 통합되는 건 불가능에 가깝다. 기술론을 지어 올리는 과정에서 이런 양상은 간혹 상당한 이해충돌을 형성하며 대체로 임의적인 의사결정을 요한다.
+정형화된 언어에서, 구문론은 아주 고도화된 규칙으로 정확성을 보장하고 자유도를 남기며, 의미론은 그 위에서 우아하게 자유로운 표현의 가능성을 구사한다. 그러나 그 연결<sup>binding</sup>은 종종, 지극히 단순한 형상을 이리저리 나열해 유래를 알 수 없는 변주를 반복할 뿐인 지루한 모양이 된다. 그러나 참고로 이런 형상들은 물질로 치자면 확산되는 것과 비슷한 경향이 있기 때문에, 서로 간섭하지 않도록 하려면 수학적인 분석이 필요하고, 이에 대한 철학은 다분히 언어철학적이며 전혀 낭만적이지 않다. 기껏해야 앞서 언급한 통합된 시스템의 일관성에 대한 심미안 같은 게 좀 필요할 뿐이다. 근데 그게 없이 느낌적인 느낌만으로 알아서 시스템이 통합되는 건 불가능에 가깝다. 기술론을 지어 올리는 과정에서 이런 양상은 간혹 상당한 이해충돌을 형성하며 대체로 임의적인 의사결정을 요한다.
 
 이런 부분을 하나하나 읽는 것도 (적어도 당분간은 여전히) 인간 엔지니어가 할 줄 알아야 하는 일이라는 점을 말하고 싶었다. 끝.
