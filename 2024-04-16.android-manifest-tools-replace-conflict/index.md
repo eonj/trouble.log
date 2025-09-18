@@ -14,14 +14,14 @@ Multiple entries with same key: android:allowBackup=REPLACE and tools:allowBacku
 >
 > ----
 >
-> <https://github.com/2BAB/Seal>/README.md
+> <https://github.com/2BAB/Seal> [@ 1e95eba668e1d05f23f46540888d2589ddbee4cb: /README.md](>https://github.com/2BAB/Seal/blob/1e95eba668e1d05f23f46540888d2589ddbee4cb/README.md>)
 
 이 문제는 일정한 프로젝트의 코드와 의존성 구성이더라도 환경에 따라 재현이 안 되기도 하는데, 재현된다면 열심히 고칠 수밖에 없다. Gradle 작업이 `process[ApplicationVariant]Manifest` 단계에서 실패하면 `assemble[ApplicationVariant]` 수준은 실패할 수밖에 없기 때문이고, 이 문제는 manifest log 도 남기지 않기 때문이다. 방법은 두 가지.
 
 1. 정석대로, Maven 저장소에 AAR 아티팩트를 배포하는 라이브러리 프로젝트 원본을 수정하여 재배포한다.
-  - **`android:allowBackup="false"` 라느니 `tools:replace="android:allowBackup"` 이니 하는 구문은 라이브러리 프로젝트에 존재할 이유가 없다.** 라이브러리가 activity 나 service 따위를 제공하거나, 더 나아가 다소간에 프레임워크 역할을 하는 경우가 있지만 `Application` 클래스를 지정하는 프레임워크 수준이 아니라면 이런 구문은 전부 삭제한다.
+  - **`android:allowBackup="false"` 라느니 `tools:replace="android:allowBackup"` 이니 하는 구문은 라이브러리 프로젝트에 존재할 이유가 없다.** 라이브러리가 activity 나 service 따위를 제공하거나, 더 나아가 다소간에 프레임워크 역할을 하는 경우가 있지만 `Application` 클래스를 지정하는 프레임워크 수준이 아니라면 이런 구문은 전부 삭제한다. \[1\]
 2. `application` 프로젝트는 그래도 이 문제에 면역력이 있는 편이다. AGP, build-tools 가 매끄럽게 작동하게 해 준다.
-  - `<manifest>` 의 낡은 `package="..."` 속성 구문을 전부 삭제한다. \[1\]
+  - `<manifest>` 의 낡은 `package="..."` 속성 구문을 전부 삭제한다. \[2\]
   - Gradle 프로젝트에 `library` 프로젝트 모듈이 있다면, 이들의 `<application>` 태그에서 속성 값을 모두 삭제한다. 또한 `library` 프로젝트에서 문제 있는 라이브러리 의존성 동작 명세 `implementation` 에서 `compileOnly` 로 변경하고, `application` 프로젝트에서 `implementation` 의존성을 갖게 한다.
   - 낡은 구문을 청소하다 보면&hellip; 오류 메시지는 어느 라이브러리 간에 `tools:replace` 충돌이 일어났는지 알려주기도 한다&hellip;.
 3. Seal 같은 걸 써서 `beforeMerge`, `afterMerge` 규칙으로 때워 본다.
@@ -49,7 +49,21 @@ Android 12 (S; API 31) 릴리스 노트에 이미 다음과 같이 공지된 바
 
 ----
 
-\[1\] Android Dev Summit 2022 &mdash; *What's New in Android Build.* <https://www.youtube.com/watch?v=WZ1A7aoEHSw>
+\[1\] (Update @ Sep 2025) 한편 SonarQube 에서는 모든 Android 프로젝트 모듈의 manifest XML 코드가 `android:allowBackup="false"` 값을 포함하도록 하고 있다 (minSdk 31 등 조건에 무관하게). ID 는 `xml:S6358` 이다. 
+
+> **Allowing application backups is security-sensitive**
+>
+> Android has a built-in backup mechanism that can save and restore application data. When application backup is enabled, local data from your application can be exported to Google Cloud or to an external device via adb backup. Enabling Android backup exposes your application to disclosure of sensitive data. It can also lead to corruption of local data when restoration is performed from an untrusted source.
+>
+> (*omitted below*)
+>
+> ----
+>
+> <https://rules.sonarsource.com/xml/RSPEC-6358/>
+
+이는 `application` 프로젝트가 아닌 `library` 프로젝트에서도 예외 없으며, 나는 이를 일종의 FP 로 보고 있는데 (즉 상당수 오탐이라는 의견), 여기에 약간의 FN 조건이 결합하면 조금만 삐끗해도 즉시 Seal 이 필요한 상황이 초래된다.
+
+\[2\] Android Dev Summit 2022 &mdash; *What's New in Android Build.* <https://www.youtube.com/watch?v=WZ1A7aoEHSw>
 
 ![manifest-wi-package](./manifest-wi-package.png)
 
