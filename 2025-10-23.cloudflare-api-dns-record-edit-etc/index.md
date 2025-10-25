@@ -31,6 +31,6 @@ curl -X PUT "https://api.cloudflare.com/client/v4/zones/$zone_id/dns_records/$dn
 
 아니 뭐 API 토큰을 쓰는 게 아니면 인증 키를 (`X-Auth-Key`, `X-Auth-Email`) 쓰란 말인가? 레거시인데? 아니면 `PUT` 이 잘못되었으니 `PATCH` 를 써야 하나 &mdash; 문서에는 둘 다 있는데? 어림없지. PATCH method not allowed for the api\_token authentication scheme.
 
-이 문제의 원인은 하나뿐이다. 코드 상에 레코드 ID 가 없어서 요청의 경로가 `/client/v4/zones/(zone_id)/dns_records/` 로 끝나고 만 것이다. 이는 처음에 접근한 경로인 `GET /zones/(zone_id)/dns_records` 와 같다. 이 경로에 대한 연산은 &ldquo;List DNS Records&rdquo; (`GET ...`) 또는 &ldquo;Create DNS Record&rdquo; (`POST ...`) 뿐이다. `PUT` 은 허용되지 않는다. 끝.
+이 문제의 원인은 하나뿐이다. 코드 상에 레코드 ID 가 없어서 요청의 경로가 `/client/v4/zones/(zone_id)/dns_records/` 로 끝나고 만 것이다. 이는 처음에 접근한 경로인 `GET /zones/(zone_id)/dns_records` 와 같다. (트레일링 솔리더스를 사뿐히 무시해 준다. 고맙다! 🙂👍) 이 경로에 대한 연산은 &ldquo;List DNS Records&rdquo; (`GET ...`) 또는 &ldquo;Create DNS Record&rdquo; (`POST ...`) 뿐이다. `PUT` 은 허용되지 않는다. 끝.
 
 진단? 이런 문제가 생기는 내재적 원인은, 물론 다양하겠지만, 예컨대 `response.get_dns_records.json` 을 파싱하지 못하는 것일 수 있다. 셸 스크립트의 경우 `jq` 같은 걸 사용했을 법하고 이게 PATH 범위의 명령어에 없었거나 아무튼 예상되지 않은 동작을 했을 수 있다. 물론 이 문제는 ISP DHCP 에서 주는 공인 IP 주소가 변경되고 나서 발견된다. 어느 정도 새너티 체크가 있더라도 모니터링이 없다면 미리 대응할 수 없으며, 트러블슈팅은 사람 몫이다. 규모의 경제에서 그 비용이 희석될 뿐.
