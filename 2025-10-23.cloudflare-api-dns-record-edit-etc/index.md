@@ -13,7 +13,7 @@ curl -X GET "https://api.cloudflare.com/client/v4/zones/$zone_id/dns_records" \
   > result.get_dns_records.json
 ```
 
-그러면 필요한 정보가 모두 있으니 업데이트만 하면 된다. 둘 중 무엇을 쓰든 괜찮다. &ldquo;Update DNS Record&rdquo; (`PATCH /zones/{zone_id}/dns_records/{dns_record_id}`) 그리고 (&ldquo;Overwrite DNS Record&rdquo; `PUT /zones/{zone_id}/dns_records/{dns_record_id}`) 가 있다. 후자를 써 보자. `ARecord` 유형 명세에 맞는 `$json` 준비하시고.
+그러면 필요한 정보가 모두 있으니 업데이트만 하면 된다. 둘 중 무엇을 쓰든 괜찮다. &ldquo;Update DNS Record&rdquo; (`PATCH /zones/{zone_id}/dns_records/{dns_record_id}`) 그리고 &ldquo;Overwrite DNS Record&rdquo; (`PUT /zones/{zone_id}/dns_records/{dns_record_id}`) 가 있다. 후자를 써 보자. `ARecord` 유형 명세에 맞는 `$json` 준비하시고.
 
 ```sh
 curl -X PUT "https://api.cloudflare.com/client/v4/zones/$zone_id/dns_records/$dns_record_id" \
@@ -29,7 +29,7 @@ curl -X PUT "https://api.cloudflare.com/client/v4/zones/$zone_id/dns_records/$dn
 {"success":false,"errors":[{"code":10000,"message":"PUT method not allowed for the api_token authentication scheme"}]}
 ```
 
-아니 뭐 API 토큰을 쓰는 게 아니면 인증 키를 (`X-Auth-Key`, `X-Auth-Email`) 쓰란 말인가? 레거시인데? 아니면 PUT 이 잘못되었으니 PATCH 를 써야 하나? 어림없지. PATCH method not allowed for the api\_token authentication scheme.
+아니 뭐 API 토큰을 쓰는 게 아니면 인증 키를 (`X-Auth-Key`, `X-Auth-Email`) 쓰란 말인가? 레거시인데? 아니면 `PUT` 이 잘못되었으니 `PATCH` 를 써야 하나 &mdash; 문서에는 둘 다 있는데? 어림없지. PATCH method not allowed for the api\_token authentication scheme.
 
 이 문제의 원인은 하나뿐이다. 코드 상에 레코드 ID 가 없어서 요청의 경로가 `/client/v4/zones/(zone_id)/dns_records/` 로 끝나고 만 것이다. 이는 처음에 접근한 경로인 `GET /zones/(zone_id)/dns_records` 와 같다. 이 경로에 대한 연산은 &ldquo;List DNS Records&rdquo; (`GET ...`) 또는 &ldquo;Create DNS Record&rdquo; (`POST ...`) 뿐이다. `PUT` 은 허용되지 않는다. 끝.
 
