@@ -18,6 +18,7 @@
 
 ## 글 목록
 
+* [`2025-10-23.cloudflare-api-dns-record-edit-etc`](./2025-10-23.cloudflare-api-dns-record-edit-etc/)<br />Cloudflare API 실패 메시지 &ldquo;PUT method not allowed for the api\_token authentication scheme&rdquo;
 * [`2025-04-09.an-octet-aspect-to-ietf-rfc-9110`](./2025-04-09.an-octet-aspect-to-ietf-rfc-9110/)<br />옥텟 규칙으로 본 IETF RFC 9110 &ldquo;HTTP Semantics&rdquo;
 * [`2024-04-16.android-manifest-tools-replace-conflict`](./2024-04-16.android-manifest-tools-replace-conflict/)<br />Android manifest `tools:replace` 충돌
 * [`2023-10-07.usb-pps-to-barrel-jack-smps`](./2023-10-07.usb-pps-to-barrel-jack-smps/)<br />USB-C PPS 를 배럴<sup>barrel</sup> SMPS 로 사용하기
